@@ -3,13 +3,11 @@ import React from "react";
 const Home = () => {
   return (
     <div>
-      <h1>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque minus
-        facilis sequi incidunt non, aspernatur unde tempore saepe, commodi dicta
-        rem suscipit optio similique illo delectus autem fugiat cumque provident
-        quam ducimus doloremque laborum! Praesentium omnis nulla iure eveniet
-        mollitia?
-      </h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae amet
+        eveniet voluptates. Provident aliquam odit cum et quaerat, obcaecati
+        blanditiis nisi tempora aperiam similique non necessitatibus tempore?
+      </p>
     </div>
   );
 };
