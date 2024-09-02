@@ -3,8 +3,27 @@ import { FaUser } from "react-icons/fa";
 import { MdMarkEmailUnread } from "react-icons/md";
 import { IoMdPhotos } from "react-icons/io";
 import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 const Registration = () => {
+  const navigate = useNavigate();
+  const { createUser, user, setUser, loading, updateUserProfile } = useAuth();
+  const handleRegistration = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const photo = form.photo.value;
+    const pass = form.pass.value;
+    try {
+      const result = await createUser(email, pass);
+      await updateUserProfile(name, photo);
+      setUser({ ...result?.user, photoURL: photo, displayName: name });
+      navigate("/");
+    } catch (err) {
+      console.log(err?.message);
+    }
+  };
   return (
     <div>
       <div className="flex my-10 w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl">
@@ -17,7 +36,7 @@ const Registration = () => {
               New Here? Register First
             </h3>
 
-            <form className="w-full">
+            <form onSubmit={handleRegistration} className="w-full">
               <div className="relative flex items-center mt-3">
                 <span className="absolute">
                   <FaUser className="w-6 h-6 mx-3 text-gray-300 " />
@@ -25,7 +44,8 @@ const Registration = () => {
 
                 <input
                   type="text"
-                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  name="name"
+                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   placeholder="Enter your name"
                 />
               </div>
@@ -36,7 +56,7 @@ const Registration = () => {
                 <input
                   type="email"
                   name="email"
-                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   placeholder="Enter your email"
                 />
               </div>
@@ -47,7 +67,7 @@ const Registration = () => {
                 <input
                   type="text"
                   name="photo"
-                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   placeholder="Enter your photo url"
                 />
               </div>
@@ -56,7 +76,7 @@ const Registration = () => {
                 <span className="absolute">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
+                    className="w-6 h-6 mx-3 text-gray-300 "
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -72,8 +92,9 @@ const Registration = () => {
 
                 <input
                   type="password"
-                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                  placeholder="Password"
+                  name="pass"
+                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  placeholder="Enter your password"
                 />
               </div>
 

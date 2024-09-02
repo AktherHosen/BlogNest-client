@@ -3,9 +3,11 @@ import { Link, NavLink } from "react-router-dom";
 
 import logo from "../../assets/logo.png";
 import { Dropdown } from "flowbite-react";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logOut } = useAuth();
 
   return (
     <nav className="relative bg-white  border-r-0 shadow-sm">
@@ -100,53 +102,64 @@ const Navbar = () => {
               >
                 Featured Blogs
               </NavLink>
-              <NavLink
-                to="/login"
-                className={({ isActive }) =>
-                  `px-6 py-2 mx-3 mt-2 ml-5 rounded-full transition-colors duration-300 transform  lg:mt-0 ${
-                    isActive ? "bg-primary text-white" : "bg-primary text-white"
-                  } w-fit`
-                }
-              >
-                Login
-              </NavLink>
+              {!user && (
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    `px-6 py-2 mx-3 mt-2 ml-5 rounded-full transition-colors duration-300 transform  lg:mt-0 ${
+                      isActive
+                        ? "bg-primary text-white"
+                        : "bg-primary text-white"
+                    } w-fit`
+                  }
+                >
+                  Login
+                </NavLink>
+              )}
             </div>
 
-            <div className="flex items-center mt-4  lg:mt-0">
-              <Dropdown label="Md. Akther Hosen">
-                <Dropdown.Header>
-                  <div className="flex flex-row-reverse items-center gap-x-2">
-                    <div className="h-[50px] w-[50px]">
-                      <img
-                        referrerPolicy="no-referrer"
-                        alt="User Profile Photo"
-                        className="w-full h-full rounded-full border-2 p-2"
-                        src={logo}
-                      />
-                    </div>
+            {user && (
+              <>
+                <div className="flex items-center mt-4  lg:mt-0">
+                  <Dropdown label="Md. Akther Hosen">
+                    <Dropdown.Header>
+                      <div className="flex flex-row-reverse items-center gap-x-2">
+                        <div className="h-[50px] w-[50px]">
+                          <img
+                            referrerPolicy="no-referrer"
+                            alt="User Profile Photo"
+                            className="w-full h-full rounded-full border-2 p-2"
+                            src={user?.photoURL}
+                          />
+                        </div>
 
-                    <span className="block truncate text-sm font-medium">
-                      bonnie@flowbite.com
-                    </span>
-                  </div>
-                </Dropdown.Header>
-                <Dropdown.Item>
-                  <Link to="/add-job" className="justify-between">
-                    Add Blog
-                  </Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <Link to="/my-posted-jobs">Wishlist</Link>
-                </Dropdown.Item>
+                        <span className="block truncate text-xs font-medium">
+                          {user?.email}
+                        </span>
+                      </div>
+                    </Dropdown.Header>
+                    <Dropdown.Item>
+                      <Link to="/add-job" className="justify-between">
+                        Add Blog
+                      </Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Link to="/my-posted-jobs">Wishlist</Link>
+                    </Dropdown.Item>
 
-                <Dropdown.Divider />
-                <Dropdown.Item>
-                  <button className="text-white  hover:bg-red-500 w-full  lg:w-full bg-red-500 py-2 font-semibold hover:text-white px-3 rounded-md">
-                    Logout
-                  </button>
-                </Dropdown.Item>
-              </Dropdown>
-            </div>
+                    <Dropdown.Divider />
+                    <Dropdown.Item>
+                      <div
+                        onClick={() => logOut()}
+                        className="text-white hover:bg-red-500 w-full lg:w-full bg-red-500 py-2 font-semibold hover:text-white px-3 rounded-md cursor-pointer"
+                      >
+                        Logout
+                      </div>
+                    </Dropdown.Item>
+                  </Dropdown>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
