@@ -5,9 +5,9 @@ import Footer from "../components/shared/Footer";
 
 const Main = () => {
   return (
-    <div className="font-sans max-w-[1400px] mx-auto px-6">
-      <Navbar />
-      <div>
+    <div>
+      <div className="font-sans max-w-[1400px] mx-auto px-6">
+        <Navbar />
         <Outlet />
       </div>
       <Footer />

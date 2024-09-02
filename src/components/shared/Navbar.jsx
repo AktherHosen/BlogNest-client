@@ -14,11 +14,11 @@ const Navbar = () => {
       <div className="py-4 ">
         <div className="lg:flex lg:items-center lg:justify-between">
           <div className="flex items-center justify-between">
-            <div className="flex gap-x-2">
-              <a href="#">
+            <div>
+              <Link to="/" className="flex gap-x-2">
                 <img className="w-auto h-6 sm:h-7" src={logo} alt="" />
-              </a>
-              <h3 className="font-suse font-bold text-2xl">Blog Nest</h3>
+                <h3 className="font-suse font-bold text-2xl">Blog Nest</h3>
+              </Link>
             </div>
             {/* Mobile menu button */}
             <div className="flex lg:hidden">
@@ -71,7 +71,7 @@ const Navbar = () => {
                 : "opacity-0 -translate-x-full"
             }`}
           >
-            <div className="flex flex-col -mx-6 lg:flex-row lg:items-center lg:mx-8">
+            <div className="flex flex-col -mx-6 lg:flex-row lg:justify-evenly lg:items-center lg:ms-5">
               <NavLink
                 to="/"
                 className={({ isActive }) =>
@@ -106,7 +106,7 @@ const Navbar = () => {
                 <NavLink
                   to="/login"
                   className={({ isActive }) =>
-                    `px-6 py-2 mx-3 mt-2 ml-5 rounded-full transition-colors duration-300 transform  lg:mt-0 ${
+                    `px-6 py-2 mx-3 mt-2 me-5 rounded-full transition-colors duration-300 transform  lg:mt-0 ${
                       isActive
                         ? "bg-primary text-white"
                         : "bg-primary text-white"
