@@ -1,9 +1,9 @@
-import React from "react";
-import { FaGithub, FaGoogle } from "react-icons/fa";
-
+import { FaGoogle } from "react-icons/fa";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
+
 const Login = () => {
   const { signIn, signInWithGoogle } = useAuth();
 
@@ -16,8 +16,9 @@ const Login = () => {
     try {
       const result = await signIn(email, password);
       e.target.reset();
+      toast.success("Logged in successful.");
     } catch (err) {
-      console.log(err?.message);
+      toast.error(err?.message);
     }
   };
   // #Google sign in

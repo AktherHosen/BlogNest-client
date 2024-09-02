@@ -11,6 +11,9 @@ module.exports = {
       backgroundColor: {
         primary: "#00579a",
       },
+      colors: {
+        primary: "#00579a",
+      },
     },
   },
   plugins: [flowbite.plugin()],

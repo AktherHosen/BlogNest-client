@@ -5,6 +5,7 @@ import { IoMdPhotos } from "react-icons/io";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { toast } from "react-hot-toast";
 const Registration = () => {
   const navigate = useNavigate();
   const { createUser, user, setUser, loading, updateUserProfile } = useAuth();
@@ -15,13 +16,30 @@ const Registration = () => {
     const email = form.email.value;
     const photo = form.photo.value;
     const pass = form.pass.value;
+    if (pass.length < 6) {
+      toast.error("Your password must contains at least 6 character");
+      return;
+    }
+    if (!/[A-Z]/.test(pass)) {
+      toast.error("Your password must contain at least one uppercase letter");
+      return;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(pass)) {
+      toast.error("Your password must contain at least one special character.");
+      return;
+    }
+    if (!/\d/.test(pass)) {
+      toast.error("Your password must contain a numeric value.");
+      return;
+    }
     try {
       const result = await createUser(email, pass);
       await updateUserProfile(name, photo);
       setUser({ ...result?.user, photoURL: photo, displayName: name });
       navigate("/");
+      toast.success("Registration successful.");
     } catch (err) {
-      console.log(err?.message);
+      toast.error(err?.message);
     }
   };
   return (

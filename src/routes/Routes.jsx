@@ -3,11 +3,13 @@ import Main from "../layout/Main";
 import { createBrowserRouter } from "react-router-dom";
 import Login from "../pages/Authentication/Login";
 import Registration from "../pages/Authentication/Registration";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
