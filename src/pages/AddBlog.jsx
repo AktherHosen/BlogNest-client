@@ -89,6 +89,7 @@ const AddBlog = () => {
               <input
                 type="email"
                 name="email"
+                defaultValue={user?.email}
                 placeholder="Your Email"
                 className="w-full rounded-sm outline-none"
               />
