@@ -6,6 +6,7 @@ import Registration from "../pages/Authentication/Registration";
 import ErrorPage from "../pages/ErrorPage";
 import AddBlog from "../pages/AddBlog";
 import Blogs from "../pages/Blogs";
+import BlogDetail from "../pages/BlogDetail";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,12 @@ const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <Blogs />,
+      },
+      {
+        path: "/blog/:id",
+        element: <BlogDetail />,
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_API_URL}/blog/${params.id}`),
       },
     ],
   },

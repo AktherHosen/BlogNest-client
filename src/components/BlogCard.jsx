@@ -24,8 +24,6 @@ const BlogCard = ({ blog }) => {
           className="rounded-lg border w-full h-[250px]"
         />
         <div className="mt-2 space-y-2 min-h-[160px]">
-          <div className="flex justify-end"></div>
-
           <div className="flex justify-between items-center">
             <button className="bg-primary text-white font-semibold px-3 rounded-lg text-xs py-1">
               {category}
