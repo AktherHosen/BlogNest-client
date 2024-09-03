@@ -93,9 +93,9 @@ const Navbar = () => {
                 Blogs
               </NavLink>
               <NavLink
-                to="/featured-blogs"
+                to="/top-blogs"
                 className={({ isActive }) =>
-                  `px-3 py-2 mx-3 mt-2 transition-colors duration-300 transform rounded-md lg:mt-0 ${
+                  `px-3 py-2 mx-3 mt-2 me-2 transition-colors duration-300 transform rounded-md lg:mt-0 ${
                     isActive ? "bg-primary text-white" : "text-gray-700"
                   }`
                 }

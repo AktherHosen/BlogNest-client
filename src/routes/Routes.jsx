@@ -8,6 +8,7 @@ import AddBlog from "../pages/AddBlog";
 import Blogs from "../pages/Blogs";
 import BlogDetail from "../pages/BlogDetail";
 import UpdateBlog from "../pages/UpdateBlog";
+import FeaturedBlogs from "../pages/FeaturedBlogs";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
         element: <UpdateBlog />,
         loader: ({ params }) =>
           fetch(`${import.meta.env.VITE_API_URL}/blog/${params.id}`),
+      },
+      {
+        path: "/top-blogs",
+        element: <FeaturedBlogs />,
       },
     ],
   },
