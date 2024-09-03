@@ -7,7 +7,7 @@ import { BiWorld } from "react-icons/bi";
 import { Link } from "react-router-dom";
 const Footer = () => {
   return (
-    <div className="mt-8 bg-[#1E1E1E] min-h-[260px] flex items-center opacity-80 bg-blend-overlay text-white px-6 py-6 lg:px-20 ">
+    <div className="mt-8 bg-[#1E1E1E] min-h-[260px] flex items-center opacity-80  text-white px-6 py-6 lg:px-20 ">
       <div className="grid grid-cols-2 md:grid-cols-3  lg:grid-cols-4 gap-4">
         <div className="col-span-2 md:col-span-1 md:grid-cols-1 space-y-2">
           <img src={logo} alt="" className="h-12" />

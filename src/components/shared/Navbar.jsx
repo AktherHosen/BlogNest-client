@@ -120,8 +120,13 @@ const Navbar = () => {
 
             {user && (
               <>
-                <div className="flex items-center mt-4  lg:mt-0">
-                  <Dropdown label="Md. Akther Hosen">
+                <div className="flex items-center mt-4 ml-3 lg:mt-0">
+                  <Dropdown
+                    style={{
+                      backgroundColor: "#00579a",
+                    }}
+                    label="Md. Akther Hosen"
+                  >
                     <Dropdown.Header>
                       <div className="flex flex-row-reverse items-center gap-x-2">
                         <div className="h-[50px] w-[50px]">
@@ -139,7 +144,7 @@ const Navbar = () => {
                       </div>
                     </Dropdown.Header>
                     <Dropdown.Item>
-                      <Link to="/add-job" className="justify-between">
+                      <Link to="/add-blog" className="justify-between">
                         Add Blog
                       </Link>
                     </Dropdown.Item>
