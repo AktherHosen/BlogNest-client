@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
-import { RiHeart2Fill } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
-import { AiFillDelete } from "react-icons/ai";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import { FaRegBookmark } from "react-icons/fa";
+import { AiFillDelete } from "react-icons/ai";
+import { BiSolidErrorCircle } from "react-icons/bi";
 const BlogDetail = () => {
   const navigate = useNavigate();
   const blog = useLoaderData();
+  const [comments, setComments] = useState([]);
   const { user } = useAuth();
   const {
     _id,
@@ -33,13 +34,56 @@ const BlogDetail = () => {
       toast.error(err?.message);
     }
   };
+
+  const handleCommentPost = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const comment = form.comment.value;
+    const blogId = _id;
+    const commentUserName = user?.displayName;
+    const commentUserPhoto = user?.photoURL;
+    const commentInfo = {
+      blogId,
+      comment,
+      commentUserName,
+      commentUserPhoto,
+    };
+
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/comment`,
+        commentInfo
+      );
+      toast.success("Comment added successfully.");
+      setComments((prevComments) => [...prevComments, data]);
+      form.reset();
+    } catch (err) {
+      toast.error(err?.message);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}/comments?blogId=${_id}`
+      );
+      setComments(data);
+    } catch (err) {
+      console.error("Error fetching comments:", err);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [_id]);
+
   return (
     <div>
       <div className="my-4 flex justify-between items-center">
         <div>
           <h1 className="">
             <span className="font-suse text-primary text- font-semibold">
-              {blogTitle}
+              {blogTitle} {comments.length}
             </span>
           </h1>
 
@@ -82,8 +126,8 @@ const BlogDetail = () => {
                 {category}
               </button>
 
-              <button className="text-2xl hover:text-red-600" title="Wishlist">
-                <RiHeart2Fill size={30} />
+              <button className="text-2xl" title="Wishlist">
+                <FaRegBookmark size={30} color="gray" />
               </button>
             </div>
             <h2 className="font-medium text-lg">{blogTitle}</h2>
@@ -107,6 +151,79 @@ const BlogDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* show comment */}
+      <div className="my-4 max-w-2xl">
+        <h3 className="text-2xl font-semibold font-suse">
+          {comments.length} Comments
+        </h3>
+        <div className="grid grid-cols-1">
+          {comments.map((comment) => (
+            <>
+              <div
+                key={comment._id}
+                className="flex sm:flex-row 
+         mt-4 gap-2"
+              >
+                <div className="">
+                  <img
+                    src={comment.commentUserPhoto}
+                    alt=""
+                    className="h-[50px] w-[50px] rounded-full mt-1 "
+                  />
+                </div>
+                <div className="flex-1">
+                  <div>
+                    <h4 className="font-semibold">{comment.commentUserName}</h4>
+                    <p className="">{comment.comment}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          ))}
+        </div>
+      </div>
+      {/* Posting comment  */}
+      {user?.email !== email ? (
+        <div className="flex  sm:flex-row mt-4 gap-2">
+          <div className="mt-7 lg:mt-7">
+            <img
+              src={user?.photoURL}
+              alt=""
+              className="h-[50px] w-[50px] rounded-full "
+            />
+          </div>
+          <div className="flex-1">
+            <form onSubmit={handleCommentPost}>
+              <div>
+                <label
+                  htmlFor="comment"
+                  className="text-gray-600 block mb-1 font-semibold"
+                >
+                  Leave a comment
+                </label>
+                <textarea
+                  id="comment"
+                  name="comment"
+                  className="h-20 w-full lg:max-w-xl resize-none rounded-sm outline-none border p-2"
+                ></textarea>
+              </div>
+              <div className="flex justify-end mt-2 lg:max-w-xl">
+                <button className="bg-primary px-4 py-2 rounded-full text-white">
+                  Comment
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : (
+        <div className="flex gap-2 items-center">
+          <BiSolidErrorCircle size={25} className="text-red-600" />
+          <h3 className="font-suse font-semibold">
+            Sorry! You can not comment on own blog.
+          </h3>
+        </div>
+      )}
     </div>
   );
 };
