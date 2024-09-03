@@ -1,5 +1,5 @@
 import React from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { RiHeart2Fill } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
@@ -37,12 +37,15 @@ const BlogDetail = () => {
           {user?.email === email && (
             <>
               <div className="flex items-center gap-2">
-                <button className=" hover:text-primary hover:transition-colors duration-200">
+                <Link
+                  to={`/update-blog/${_id}`}
+                  className=" hover:text-primary hover:transition-colors duration-200"
+                >
                   <FaEdit size={25} />
-                </button>
-                <button className=" hover:text-red-600 hover:transition-colors duration-200">
+                </Link>
+                <Link className=" hover:text-red-600 hover:transition-colors duration-200">
                   <AiFillDelete size={25} />
-                </button>
+                </Link>
               </div>
             </>
           )}
