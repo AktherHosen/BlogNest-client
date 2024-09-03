@@ -1,10 +1,14 @@
 import React from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { RiHeart2Fill } from "react-icons/ri";
 import { FaEdit } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import useAuth from "../hooks/useAuth";
+import axios from "axios";
+import toast from "react-hot-toast";
+
 const BlogDetail = () => {
+  const navigate = useNavigate();
   const blog = useLoaderData();
   const { user } = useAuth();
   const {
@@ -18,6 +22,17 @@ const BlogDetail = () => {
     postedDate,
     author,
   } = blog || {};
+  const handleBlogDelete = async (id) => {
+    try {
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/blog/${id}`
+      );
+      toast.success("Blog deleted successfully.");
+      navigate("/blogs");
+    } catch (err) {
+      toast.error(err?.message);
+    }
+  };
   return (
     <div>
       <div className="my-4 flex justify-between items-center">
@@ -43,9 +58,12 @@ const BlogDetail = () => {
                 >
                   <FaEdit size={25} />
                 </Link>
-                <Link className=" hover:text-red-600 hover:transition-colors duration-200">
+                <button
+                  onClick={() => handleBlogDelete(_id)}
+                  className=" hover:text-red-600 hover:transition-colors duration-200"
+                >
                   <AiFillDelete size={25} />
-                </Link>
+                </button>
               </div>
             </>
           )}
