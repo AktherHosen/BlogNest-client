@@ -149,7 +149,7 @@ const Navbar = () => {
                       </Link>
                     </Dropdown.Item>
                     <Dropdown.Item>
-                      <Link to="/my-posted-jobs">Wishlist</Link>
+                      <Link to="/my-wishlist">Wishlist</Link>
                     </Dropdown.Item>
 
                     <Dropdown.Divider />

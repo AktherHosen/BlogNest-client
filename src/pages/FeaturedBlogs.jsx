@@ -40,7 +40,10 @@ const FeaturedBlogs = () => {
           <Table.Body className="divide-y">
             {topPosts.map((top, idx) => (
               <>
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                <Table.Row
+                  key={top._id}
+                  className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                >
                   <Table.Cell className=" font-medium text-gray-400">
                     {idx + 1}
                   </Table.Cell>

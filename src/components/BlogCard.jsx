@@ -2,7 +2,7 @@ import React from "react";
 import useAuth from "../hooks/useAuth";
 import { RiHeart2Fill } from "react-icons/ri";
 import { Link } from "react-router-dom";
-const BlogCard = ({ blog }) => {
+const BlogCard = ({ blog, handleWithlist }) => {
   const { user } = useAuth();
   const {
     _id,
@@ -10,26 +10,32 @@ const BlogCard = ({ blog }) => {
     photo,
     email,
     category,
-    shortDescription,
     longDescription,
     postedDate,
     author,
   } = blog;
+
   return (
-    <Link to={`/blog/${_id}`}>
+    <div>
       <div className="w-full min-h-[400px] ">
-        <img
-          src={photo}
-          alt=""
-          className="rounded-lg border w-full h-[250px]"
-        />
+        <Link to={`/blog/${_id}`}>
+          <img
+            src={photo}
+            alt=""
+            className="rounded-lg border w-full h-[250px]"
+          />
+        </Link>
         <div className="mt-2 space-y-2 min-h-[160px]">
           <div className="flex justify-between items-center">
             <button className="bg-primary text-white font-semibold px-3 rounded-lg text-xs py-1">
               {category}
             </button>
             <div className="flex gap-x-4 items-center flex-row-reverse">
-              <button className="text-2xl hover:text-red-600" title="Wishlist">
+              <button
+                onClick={() => handleWithlist(_id)}
+                className="text-2xl hover:text-red-600"
+                title="Wishlist"
+              >
                 <RiHeart2Fill />
               </button>
               <p className="text-gray-600 text-sm font-medium ">
@@ -57,7 +63,7 @@ const BlogCard = ({ blog }) => {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
