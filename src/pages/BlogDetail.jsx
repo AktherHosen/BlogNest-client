@@ -4,7 +4,6 @@ import { FaEdit } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { FaRegBookmark } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { BiSolidErrorCircle } from "react-icons/bi";
 const BlogDetail = () => {
@@ -124,10 +123,6 @@ const BlogDetail = () => {
             <div className="flex justify-between items-center">
               <button className="bg-primary text-white font-semibold px-3 rounded-lg text-xs py-1">
                 {category}
-              </button>
-
-              <button className="text-2xl" title="Wishlist">
-                <FaRegBookmark size={30} color="gray" />
               </button>
             </div>
             <h2 className="font-medium text-lg">{blogTitle}</h2>

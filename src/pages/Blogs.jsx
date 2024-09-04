@@ -7,13 +7,16 @@ import toast from "react-hot-toast";
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [filter, setFilter] = useState("");
   const { user } = useAuth();
 
   useEffect(() => {
     const getData = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/all-blogs?search=${searchText}`
+          `${
+            import.meta.env.VITE_API_URL
+          }/all-blogs?search=${searchText}&filter=${filter}`
         );
         setBlogs(data);
       } catch (error) {
@@ -22,7 +25,7 @@ const Blogs = () => {
     };
 
     getData();
-  }, [searchText]);
+  }, [searchText, filter]);
 
   const handleWithlist = async (id) => {
     if (!user?.email) {
@@ -50,21 +53,22 @@ const Blogs = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setSearchText(searchText); // Update searchText
+    setSearchText(searchText);
   };
+  console.log(filter);
 
   return (
     <div className="my-4">
       {/* Search and filter section */}
-      <div className="flex gap-2 items-center justify-center">
-        <div className="my-8 relative">
+      <div className="w-full mb-6 md:mb-4 lg:mb-2 flex flex-col md:flex-row gap-2 items-center justify-center">
+        <div className="relative w-full  lg:max-w-md">
           <form onSubmit={handleSearch} className="relative flex items-center">
             <input
               type="text"
               onChange={(e) => setSearchText(e.target.value)}
               value={searchText}
               placeholder="Search blogs by title..."
-              className="w-full lg:w-[400px] pr-16 border border-gray-300 rounded-l-md px-4 py-2 text-gray-900 outline-none focus:outline-none"
+              className="w-full pr-16 border border-gray-300 rounded-l-md px-4 py-2 text-gray-900 outline-none focus:outline-none"
             />
             <button
               type="submit" // Ensure the button type is submit
@@ -74,17 +78,22 @@ const Blogs = () => {
             </button>
           </form>
         </div>
-        <div>
+        <div className="w-full  lg:max-w-fit">
           <select
             name="category"
             id="category"
+            onChange={(e) => setFilter(e.target.value)}
+            value={filter}
             className="border-primary rounded-md w-full px-4 py-2 outline-none"
           >
-            <option value="Tech & Gadgets">Tech & Gadgets</option>
-            <option value="Travel & Adventure">Travel & Adventure</option>
-            <option value="Education & Learning">Education & Learning</option>
-            <option value="Science & Innovation">Science & Innovation</option>
-            <option value="Lifestyle & Culture">Lifestyle & Culture</option>
+            <option value="">All</option>
+            <option value="Tech and Gadgets">Tech and Gadgets</option>
+            <option value="Travel Adventure">Travel Adventure</option>
+            <option value="Education">Education</option>
+            <option value="Science and Innovation">
+              Science and Innovation
+            </option>
+            <option value="Lifestyle">Lifestyle</option>
           </select>
         </div>
       </div>
@@ -94,14 +103,20 @@ const Blogs = () => {
           Discover, Learn, and Grow Together
         </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
-        {blogs.map((blog) => (
-          <BlogCard
-            key={blog._id}
-            blog={blog}
-            handleWithlist={handleWithlist}
-          />
-        ))}
+      <div>
+        {blogs.length === 0 ? (
+          <p className="text-center text-gray-500">No blogs found</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
+            {blogs.map((blog) => (
+              <BlogCard
+                key={blog._id}
+                blog={blog}
+                handleWithlist={handleWithlist}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

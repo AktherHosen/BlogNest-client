@@ -122,15 +122,13 @@ const AddBlog = () => {
                 id="category"
                 className="border w-full rounded-sm outline-none"
               >
-                <option value="Tech & Gadgets">Tech & Gadgets</option>
-                <option value="Travel & Adventure">Travel & Adventure</option>
-                <option value="Education & Learning">
-                  Education & Learning
+                <option value="Tech and Gadgets">Tech and Gadgets</option>
+                <option value="Travel Adventure">Travel Adventure</option>
+                <option value="Education">Education</option>
+                <option value="Science and Innovation">
+                  Science and Innovation
                 </option>
-                <option value="Science & Innovation">
-                  Science & Innovation
-                </option>
-                <option value="Lifestyle & Culture">Lifestyle & Culture</option>
+                <option value="Lifestyle">Lifestyle</option>
               </select>
             </div>
 
