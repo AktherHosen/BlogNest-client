@@ -1,12 +1,13 @@
 import { FaGoogle } from "react-icons/fa";
 import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+import { Link, replace, useLocation } from "react-router-dom";
+
 import toast from "react-hot-toast";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useAuth();
-
+  const location = useLocation();
   // #Email password sign in
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,6 +18,7 @@ const Login = () => {
       const result = await signIn(email, password);
       e.target.reset();
       toast.success("Logged in successful.");
+      navigate(from, { replace: true });
     } catch (err) {
       toast.error(err?.message);
     }
@@ -25,9 +27,11 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle();
-      console.log(result);
+      // console.log(result);
+      toast.success("Logged in successful.");
+      navigate(from, { replace: true });
     } catch (err) {
-      console.log(err?.message);
+      toast.error(err?.message);
     }
   };
 

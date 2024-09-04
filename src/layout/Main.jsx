@@ -6,7 +6,7 @@ import Footer from "../components/shared/Footer";
 const Main = () => {
   return (
     <div>
-      <div className="font-sans max-w-[1400px] mx-auto px-6">
+      <div className=" font-sans max-w-[1400px] mx-auto px-6 min-h-[calc(100vh-35px)]">
         <Navbar />
         <Outlet />
       </div>

@@ -4,11 +4,12 @@ import { MdMarkEmailUnread } from "react-icons/md";
 import { IoMdPhotos } from "react-icons/io";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
+import useAuth from "../../hooks/useAuth";
+
 const Registration = () => {
   const navigate = useNavigate();
-  const { createUser, user, setUser, loading, updateUserProfile } = useAuth();
+  const { createUser, setUser, updateUserProfile } = useAuth();
   const handleRegistration = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -36,8 +37,8 @@ const Registration = () => {
       const result = await createUser(email, pass);
       await updateUserProfile(name, photo);
       setUser({ ...result?.user, photoURL: photo, displayName: name });
-      navigate("/");
       toast.success("Registration successful.");
+      navigate(from, { replace: true });
     } catch (err) {
       toast.error(err?.message);
     }

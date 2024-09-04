@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { RiHeart2Fill } from "react-icons/ri";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { RiHeart2Fill, RiDeleteBin6Line } from "react-icons/ri";
 import toast from "react-hot-toast";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 const Wishlist = () => {
   const { user } = useAuth();
   const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
+
   const getData = async () => {
     try {
       const { data } = await axios.get(
@@ -17,8 +21,11 @@ const Wishlist = () => {
       setWishlist(data);
     } catch (error) {
       console.error("Failed to fetch wishlist", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
+
   useEffect(() => {
     if (user?.email) {
       getData();
@@ -27,15 +34,16 @@ const Wishlist = () => {
 
   const handleDelete = async (_id) => {
     try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/wishlist/${_id}`
-      );
+      await axios.delete(`${import.meta.env.VITE_API_URL}/wishlist/${_id}`);
       toast.success("Wishlist blog deleted successfully.");
       getData();
     } catch (err) {
       toast.error(err?.message);
     }
   };
+
+  // Number of skeleton items to display
+  const skeletonCount = 6;
 
   return (
     <div className="my-4">
@@ -46,7 +54,32 @@ const Wishlist = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
-        {wishlist.length > 0 ? (
+        {loading ? (
+          // Render skeletons while loading
+          Array.from({ length: skeletonCount }).map((_, idx) => (
+            <div key={idx} className="w-full min-h-[400px]">
+              <Skeleton height={250} />
+              <div className="mt-2 space-y-2 min-h-[160px]">
+                <div className="flex justify-between items-center">
+                  <Skeleton width={100} height={20} />
+                  <div className="flex gap-x-4 items-center flex-row-reverse">
+                    <Skeleton circle={true} height={30} width={30} />
+                    <Skeleton width={70} height={20} />
+                  </div>
+                </div>
+                <Skeleton width={200} height={20} />
+                <Skeleton count={3} height={20} />
+              </div>
+              <div className="flex items-center gap-4 mt-2">
+                <Skeleton circle={true} height={50} width={50} />
+                <div>
+                  <Skeleton width={100} height={20} />
+                  <Skeleton width={80} height={20} />
+                </div>
+              </div>
+            </div>
+          ))
+        ) : wishlist.length > 0 ? (
           wishlist.map((blog) => (
             <div key={blog._id} className="w-full min-h-[400px]">
               <Link to={`/blog/${blog._id}`}>
@@ -93,7 +126,7 @@ const Wishlist = () => {
                     {blog.author?.name || "Unknown Author"}
                   </h3>
                   <p className="text-gray-600 text-sm font-normal text-justify">
-                    {blog.author?.email || "No email available"}
+                    {blog?.email || "No email available"}
                   </p>
                 </div>
               </div>

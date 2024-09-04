@@ -7,6 +7,7 @@ module.exports = {
       fontFamily: {
         suse: "'SUSE', sans-serif",
         sans: "'Open Sans', sans-serif",
+        rubik: "'Rubik', sans-serif",
       },
       backgroundColor: {
         primary: "#00579a",
