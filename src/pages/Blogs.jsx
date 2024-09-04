@@ -14,6 +14,9 @@ const Blogs = () => {
     getData();
   }, []);
   const handleWithlist = async (id) => {
+    if (!user?.email) {
+      return toast.error("You can't add wishlist without login.");
+    }
     const wishlistDate = new Date();
     const wishListUserEmail = user?.email;
     const blogId = id;

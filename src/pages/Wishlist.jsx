@@ -4,26 +4,38 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { RiHeart2Fill } from "react-icons/ri";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import toast from "react-hot-toast";
 const Wishlist = () => {
   const { user } = useAuth();
   const [wishlist, setWishlist] = useState([]);
+  const getData = async () => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}/wishlist?email=${user?.email}`
+      );
+      console.log("Fetched wishlist data:", data); // Check the structure
+      setWishlist(data);
+    } catch (error) {
+      console.error("Failed to fetch wishlist", error);
+    }
+  };
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/wishlist?email=${user?.email}`
-        );
-        console.log("Fetched wishlist data:", data); // Check the structure
-        setWishlist(data);
-      } catch (error) {
-        console.error("Failed to fetch wishlist", error);
-      }
-    };
-
     if (user?.email) {
       getData();
     }
   }, [user?.email]);
+
+  const handleDelete = async (_id) => {
+    try {
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/wishlist/${_id}`
+      );
+      toast.success("Wishlist blog deleted successfully.");
+      getData();
+    } catch (err) {
+      toast.error(err?.message);
+    }
+  };
 
   return (
     <div className="my-4">
@@ -51,6 +63,7 @@ const Wishlist = () => {
                   </button>
                   <div className="flex gap-x-4 items-center flex-row-reverse">
                     <button
+                      onClick={() => handleDelete(blog._id)}
                       className="text-2xl hover:text-red-600"
                       title="Delete"
                     >
