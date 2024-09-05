@@ -1,15 +1,18 @@
 import React from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const UpdateBlog = () => {
   const { user } = useAuth();
-  const blog = useLoaderData();
+  // const blog = useLoaderData();
+  const id = useParams();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
+  const { data: blog = [] } = useQuery();
   const {
     _id,
     blogTitle,

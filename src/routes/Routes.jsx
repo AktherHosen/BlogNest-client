@@ -49,8 +49,6 @@ const router = createBrowserRouter([
             <BlogDetail />
           </PrivateRoutes>
         ),
-        loader: ({ params }) =>
-          fetch(`${import.meta.env.VITE_API_URL}/blog/${params.id}`),
       },
       {
         path: "/update-blog/:id",
@@ -59,8 +57,6 @@ const router = createBrowserRouter([
             <UpdateBlog />
           </PrivateRoutes>
         ),
-        loader: ({ params }) =>
-          fetch(`${import.meta.env.VITE_API_URL}/blog/${params.id}`),
       },
       {
         path: "/top-blogs",

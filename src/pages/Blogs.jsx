@@ -5,31 +5,31 @@ import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import useAxiosSecure from "../hooks/useAxiosSecure";
-
+import { useQuery } from "@tanstack/react-query";
 const Blogs = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [filter, setFilter] = useState("");
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axiosSecure.get(
-          `/all-blogs?search=${searchText}&filter=${filter}`
-        );
-        setBlogs(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-        setLoading(false);
-      }
-    };
 
-    getData();
-  }, [searchText, filter]);
+  const fetchBlogs = async () => {
+    const { data } = await axiosSecure.get(
+      `/all-blogs?search=${searchText}&filter=${filter}`
+    );
+    return data;
+  };
+
+  const {
+    data: blogs = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["blogs", searchText, filter],
+    queryFn: fetchBlogs,
+    keepPreviousData: true,
+  });
 
   const handleWithlist = async (id) => {
     if (!user?.email) {
@@ -54,8 +54,12 @@ const Blogs = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setSearchText(searchText);
+    refetch();
   };
+
+  if (isError) {
+    return <p className="text-center text-red-500">Error: {error.message}</p>;
+  }
 
   return (
     <div className="my-4">
@@ -104,7 +108,7 @@ const Blogs = () => {
         </p>
       </div>
       <div>
-        {loading ? (
+        {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
             {/* Render skeletons while loading */}
             {Array.from({ length: 6 }).map((_, index) => (

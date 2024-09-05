@@ -1,32 +1,43 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import { AiFillDelete } from "react-icons/ai";
 import { BiSolidErrorCircle } from "react-icons/bi";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css"; // Import CSS for Skeleton
+import "react-loading-skeleton/dist/skeleton.css";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const BlogDetail = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const blog = useLoaderData();
-  const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+
+  const getBlog = async (id) => {
+    const { data } = await axiosSecure.get(`/blog/${id}`);
+    return data;
+  };
+  const { data: blog, isLoading: blogLoading } = useQuery({
+    queryKey: ["blog", id],
+    queryFn: () => getBlog(id),
+  });
+
+  const getComment = async (id) => {
+    const { data } = await axiosSecure.get(`/comments?blogId=${id}`);
+    return data;
+  };
+
   const {
-    _id,
-    blogTitle,
-    photo,
-    email,
-    category,
-    shortDescription,
-    longDescription,
-    postedDate,
-    author,
-  } = blog || {};
+    data: comments = [],
+    isLoading: commentsLoading,
+    refetch: refetchComments,
+  } = useQuery({
+    queryKey: ["comments", id],
+    queryFn: () => getComment(id),
+  });
 
   const handleBlogDelete = async (id) => {
     try {
@@ -42,7 +53,7 @@ const BlogDetail = () => {
     e.preventDefault();
     const form = e.target;
     const comment = form.comment.value;
-    const blogId = _id;
+    const blogId = id;
     const commentUserName = user?.displayName;
     const commentUserPhoto = user?.photoURL;
     const commentInfo = {
@@ -53,38 +64,26 @@ const BlogDetail = () => {
     };
 
     try {
-      const { data } = await axiosSecure.post(`/comment`, commentInfo);
+      await axiosSecure.post(`/comment`, commentInfo);
       toast.success("Comment added successfully.");
-
-      setComments((prevComments) => [
-        ...prevComments,
-        {
-          ...data,
-          commentUserName: user?.displayName,
-          commentUserPhoto: user?.photoURL,
-          comment: comment,
-        },
-      ]);
-
+      refetchComments();
       form.reset();
     } catch (err) {
       toast.error(err?.message);
     }
   };
 
-  const getData = async () => {
-    try {
-      const { data } = await axiosSecure.get(`/comments?blogId=${_id}`);
-      setComments(data);
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching comments:", err);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-  }, [_id]);
+  const {
+    _id,
+    blogTitle,
+    photo,
+    email,
+    category,
+    shortDescription,
+    longDescription,
+    postedDate,
+    author,
+  } = blog || {};
 
   return (
     <div>
@@ -92,10 +91,10 @@ const BlogDetail = () => {
         <div>
           <h1>
             <span className="font-suse text-primary text-lg font-semibold">
-              {loading ? <Skeleton width={150} /> : blogTitle}
+              {blogLoading ? <Skeleton width={150} /> : blogTitle}
             </span>
           </h1>
-          {loading ? (
+          {blogLoading ? (
             <Skeleton width={80} height={30} />
           ) : (
             <button className="bg-primary text-white font-semibold px-3 rounded-sm text-xs py-1">
@@ -105,17 +104,17 @@ const BlogDetail = () => {
         </div>
 
         <div>
-          {user?.email === email && !loading && (
+          {user?.email === email && !blogLoading && (
             <div className="flex items-center gap-2">
               <Link
                 to={`/update-blog/${_id}`}
-                className=" hover:text-primary hover:transition-colors duration-200"
+                className="hover:text-primary hover:transition-colors duration-200"
               >
                 <FaEdit size={25} />
               </Link>
               <button
                 onClick={() => handleBlogDelete(_id)}
-                className=" hover:text-red-600 hover:transition-colors duration-200"
+                className="hover:text-red-600 hover:transition-colors duration-200"
               >
                 <AiFillDelete size={25} />
               </button>
@@ -123,11 +122,12 @@ const BlogDetail = () => {
           )}
         </div>
       </div>
+
       <div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 lg:gap-6">
           {/* Image Section */}
           <div className="col-span-2 overflow-hidden rounded-lg">
-            {loading ? (
+            {blogLoading ? (
               <Skeleton height={500} className="rounded-lg" />
             ) : (
               <img
@@ -148,7 +148,7 @@ const BlogDetail = () => {
 
               {/* Author Card */}
               <div className="h-[300px] border rounded-lg hover:bg-primary hover:text-white hover:transition-all hover:bg-opacity-80 duration-300 hover:rounded-lg">
-                {loading ? (
+                {blogLoading ? (
                   <>
                     <Skeleton
                       height={150}
@@ -185,7 +185,7 @@ const BlogDetail = () => {
             <div>
               <h3 className="font-rubik">
                 <span className="text-sm">By </span>
-                {loading ? (
+                {blogLoading ? (
                   <Skeleton width={100} height={20} />
                 ) : (
                   <span className="font-semibold text-gray-600">
@@ -193,7 +193,7 @@ const BlogDetail = () => {
                   </span>
                 )}{" "}
                 -{" "}
-                {loading ? (
+                {blogLoading ? (
                   <Skeleton width={80} height={20} />
                 ) : (
                   <span className="font-semibold text-gray-600">
@@ -207,14 +207,15 @@ const BlogDetail = () => {
               </h3>
             </div>
           </div>
+
           <h2 className="font-normal font-rubik text-lg">
-            {loading ? <Skeleton width={200} /> : blogTitle}
+            {blogLoading ? <Skeleton width={200} /> : blogTitle}
           </h2>
 
-          <p>{loading ? <Skeleton count={2} /> : shortDescription}</p>
+          <p>{blogLoading ? <Skeleton count={2} /> : shortDescription}</p>
 
           <p className="text-gray-700 text-sm font-normal text-justify">
-            {loading ? <Skeleton count={3} /> : longDescription}
+            {blogLoading ? <Skeleton count={3} /> : longDescription}
           </p>
         </div>
       </div>
@@ -225,7 +226,7 @@ const BlogDetail = () => {
           ({comments?.length}) Comments
         </h3>
         <div className="grid grid-cols-1">
-          {loading
+          {commentsLoading
             ? Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="flex sm:flex-row mt-4 gap-2">
                   <Skeleton circle={true} height={50} width={50} />
@@ -238,17 +239,17 @@ const BlogDetail = () => {
               ))
             : comments.map((com) => (
                 <div key={com._id} className="flex sm:flex-row mt-4 gap-2">
-                  <div className="">
+                  <div>
                     <img
                       src={com?.commentUserPhoto}
                       alt=""
-                      className="h-[50px] w-[50px] rounded-full mt-1 "
+                      className="h-[50px] w-[50px] rounded-full mt-1"
                     />
                   </div>
                   <div className="flex-1">
                     <div>
                       <h4 className="font-semibold">{com?.commentUserName}</h4>
-                      <p className="">{com?.comment}</p>
+                      <p>{com?.comment}</p>
                     </div>
                   </div>
                 </div>
@@ -259,43 +260,36 @@ const BlogDetail = () => {
       {/* Posting comment */}
       {user?.email !== email ? (
         <div className="flex sm:flex-row mt-4 gap-2">
-          <div className="mt-7 lg:mt-7">
+          <div className="mt-1">
             <img
               src={user?.photoURL}
               alt=""
-              className="h-[50px] w-[50px] rounded-full "
+              className="h-[50px] w-[50px] rounded-full"
             />
           </div>
-          <div className="flex-1">
-            <form onSubmit={handleCommentPost} className="max-w-xl">
-              <div>
-                <label
-                  htmlFor="comment"
-                  className="text-gray-600 block mb-1 font-semibold"
-                >
-                  Leave a comment
-                </label>
-                <textarea
-                  id="comment"
-                  name="comment"
-                  className="block w-full mt-2 p-2 border shadow-sm focus:outline-primary resize-none rounded-md"
-                  placeholder="Your comment"
-                  rows="5"
-                  required
-                ></textarea>
-              </div>
-              <div className="mt-3">
-                <button className="px-4 py-2 rounded-sm bg-primary text-white">
-                  Comment
-                </button>
-              </div>
-            </form>
-          </div>
+          <form onSubmit={handleCommentPost} className=" max-w-xl flex-1">
+            <textarea
+              name="comment"
+              placeholder="Write a comment..."
+              required
+              className="w-full border p-2 rounded-md outline-none resize-none focus:border-primary h-[100px]"
+            />
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="bg-primary text-white font-semibold px-4 py-2 rounded-md"
+              >
+                Post Comment
+              </button>
+            </div>
+          </form>
         </div>
       ) : (
-        <div className="text-error  flex gap-2 items-center font-semibold font-rubik">
-          <BiSolidErrorCircle size={20} />
-          <p className="">You cannot comment on your own blog</p>
+        <div className="flex justify-start gap-2 items-center">
+          <BiSolidErrorCircle size={25} className="text-red-600" />
+          <p className="text-red-600">
+            You can't post comments on your own blog.
+          </p>
         </div>
       )}
     </div>

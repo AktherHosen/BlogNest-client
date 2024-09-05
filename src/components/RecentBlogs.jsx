@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { RiHeart2Fill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
-import axios from "axios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import catImg from "../assets/cat.jpg";
-import useAxiosSecure from "../hooks/useAxiosSecure";
+
 const RecentBlogs = () => {
-  const [latestBlogs, setLatestBlogs] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const { data } = await axiosSecure.get(`/blogs`);
-        const sortedBlogs = data.sort(
-          (a, b) => new Date(b.postedDate) - new Date(a.postedDate)
-        );
-        setLatestBlogs(sortedBlogs.slice(0, 6));
-      } catch (err) {
-        toast.error(err?.message);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    getData();
-  }, []);
+  const fetchBlogs = async () => {
+    const { data } = await axiosSecure.get(`/blogs`);
+    return data;
+  };
+
+  const {
+    data: blogs,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["recentBlogs"],
+    queryFn: fetchBlogs,
+    select: (data) =>
+      data
+        .sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate))
+        .slice(0, 6),
+  });
 
   const handleWithlist = async (id) => {
     if (!user?.email) {
@@ -60,7 +60,7 @@ const RecentBlogs = () => {
       <hr className="flex-1 h-[1px] my-2 bg-primary" />
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         <div className="lg:col-span-3">
-          {loading ? (
+          {isLoading ? (
             Array.from({ length: 6 }).map((_, idx) => (
               <div
                 key={idx}
@@ -85,8 +85,10 @@ const RecentBlogs = () => {
                 </div>
               </div>
             ))
-          ) : latestBlogs.length > 0 ? (
-            latestBlogs.map((blog) => (
+          ) : isError ? (
+            <p>Error fetching blogs: {error.message}</p>
+          ) : blogs.length > 0 ? (
+            blogs.map((blog) => (
               <div
                 key={blog._id}
                 className="lg:col-span-3 grid grid-cols-1 gap-y-4 mb-6"

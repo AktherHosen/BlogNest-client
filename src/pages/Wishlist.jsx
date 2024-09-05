@@ -1,44 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import useAuth from "../hooks/useAuth";
 import { Link } from "react-router-dom";
-import {  RiDeleteBin6Line } from "react-icons/ri";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Wishlist = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [wishlist, setWishlist] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  const getData = async () => {
-    try {
-      const { data } = await axiosSecure.get(`/wishlist?email=${user?.email}`);
-      console.log("Fetched wishlist data:", data);
-      setWishlist(data);
-    } catch (error) {
-      console.error("Failed to fetch wishlist", error);
-    } finally {
-      setLoading(false);
-    }
+  const getWishlist = async () => {
+    const { data } = await axiosSecure.get(`/wishlist?email=${user?.email}`);
+    return data;
   };
+  const {
+    data: wishlist = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["wishlist", user?.email],
+    queryFn: () => getWishlist(user?.email),
+  });
 
-  useEffect(() => {
-    if (user?.email) {
-      getData();
-    }
-  }, [user?.email]);
-
-  const handleDelete = async (_id) => {
-    try {
+  // Delete wishlist blog
+  const deleteWishlist = useMutation({
+    mutationFn: async (_id) => {
       await axiosSecure.delete(`/wishlist/${_id}`);
+    },
+    onSuccess: () => {
       toast.success("Wishlist blog deleted successfully.");
-      getData();
-    } catch (err) {
+      queryClient.invalidateQueries(["wishlist", user?.email]);
+    },
+    onError: (err) => {
       toast.error(err?.message);
-    }
+    },
+  });
+
+  const handleDelete = (id) => {
+    deleteWishlist.mutate(id);
   };
 
   return (
@@ -50,7 +54,7 @@ const Wishlist = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
-        {loading ? (
+        {isLoading ? (
           Array.from({ length: 6 }).map((_, idx) => (
             <div key={idx} className="w-full min-h-[400px]">
               <Skeleton height={250} />
@@ -74,6 +78,8 @@ const Wishlist = () => {
               </div>
             </div>
           ))
+        ) : isError ? (
+          <p className="text-red-600">Error: {error.message}</p>
         ) : wishlist.length > 0 ? (
           wishlist.map((blog) => (
             <div key={blog._id} className="w-full min-h-[400px]">
