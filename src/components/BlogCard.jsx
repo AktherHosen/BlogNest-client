@@ -25,7 +25,7 @@ const BlogCard = ({ blog, handleWithlist }) => {
             className="rounded-lg border w-full h-[250px]"
           />
         </Link>
-        <div className="mt-2 space-y-2 min-h-[160px]">
+        <div className="mt-2 space-y-2 min-h-[180px]">
           <div className="flex justify-between items-center">
             <button className="bg-primary text-white font-semibold px-3 rounded-lg text-xs py-1">
               {category}

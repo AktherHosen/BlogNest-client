@@ -1,13 +1,15 @@
 import { FaGoogle } from "react-icons/fa";
 import logo from "../../assets/logo.png";
 import { Link, replace, useLocation, useNavigate } from "react-router-dom";
-
+import axios from "axios";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state || "/";
   // #Email password sign in
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,6 +18,14 @@ const Login = () => {
     const password = form.password.value;
     try {
       const result = await signIn(email, password);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        {
+          email: result?.user?.email,
+        },
+        { withCredentials: true }
+      );
+      console.log(data);
       e.target.reset();
       toast.success("Logged in successful.");
       navigate(from, { replace: true });
@@ -27,7 +37,14 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithGoogle();
-      // console.log(result);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        {
+          email: result?.user?.email,
+        },
+        { withCredentials: true }
+      );
+      console.log(data);
       toast.success("Logged in successful.");
       navigate(from, { replace: true });
     } catch (err) {

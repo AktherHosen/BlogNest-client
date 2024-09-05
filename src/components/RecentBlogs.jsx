@@ -50,7 +50,8 @@ const RecentBlogs = () => {
     try {
       await axios.post(
         `${import.meta.env.VITE_API_URL}/wishlist`,
-        wishListInfo
+        wishListInfo,
+        { withCredentials: true }
       );
       toast.success("Added to wishlist");
     } catch (err) {
@@ -77,7 +78,10 @@ const RecentBlogs = () => {
                   <div className="w-full lg:w-1/2 flex flex-col gap-y-2 justify-center">
                     <div className="flex justify-between">
                       <Skeleton width={100} height={20} />
-                      <Skeleton width={30} height={30} circle={true} />
+                      <div className="flex items-center gap-2">
+                        <Skeleton width={100} height={20} />
+                        <Skeleton width={30} height={30} circle={true} />
+                      </div>
                     </div>
                     <Skeleton width={200} height={30} />
                     <Skeleton width={300} height={20} />
@@ -116,7 +120,17 @@ const RecentBlogs = () => {
                       <button className="bg-primary px-4 py-1 text-xs text-white w-fit">
                         {blog?.category}
                       </button>
-                      <div>
+                      <div className="flex gap-2 items-center">
+                        <p className="font-semibold text-gray-600">
+                          {new Date(blog?.postedDate).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
+                        </p>
                         <button
                           onClick={() => handleWithlist(blog._id)}
                           className="text-2xl hover:text-red-600"

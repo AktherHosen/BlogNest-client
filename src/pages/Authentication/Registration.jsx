@@ -3,12 +3,16 @@ import { FaUser } from "react-icons/fa";
 import { MdMarkEmailUnread } from "react-icons/md";
 import { IoMdPhotos } from "react-icons/io";
 import logo from "../../assets/logo.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import axios from "axios";
 
 const Registration = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state || "/";
+
   const { createUser, setUser, updateUserProfile } = useAuth();
   const handleRegistration = async (e) => {
     e.preventDefault();
@@ -37,7 +41,17 @@ const Registration = () => {
       const result = await createUser(email, pass);
       await updateUserProfile(name, photo);
       setUser({ ...result?.user, photoURL: photo, displayName: name });
+      // jwt
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        {
+          email: result?.user?.email,
+        },
+        { withCredentials: true }
+      );
+
       toast.success("Registration successful.");
+      e.target.reset();
       navigate(from, { replace: true });
     } catch (err) {
       toast.error(err?.message);

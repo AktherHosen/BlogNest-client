@@ -44,7 +44,8 @@ const UpdateBlog = () => {
     try {
       const { data } = await axios.put(
         `${import.meta.env.VITE_API_URL}/blog/${_id}`,
-        blogInfo
+        blogInfo,
+        { withCredentials: true }
       );
       e.target.reset();
       toast.success("Blog updated successfully.");

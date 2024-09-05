@@ -49,7 +49,8 @@ const Blogs = () => {
     try {
       await axios.post(
         `${import.meta.env.VITE_API_URL}/wishlist`,
-        wishListInfo
+        wishListInfo,
+        { withCredentials: true }
       );
       toast.success("Added to wishlist");
     } catch (err) {

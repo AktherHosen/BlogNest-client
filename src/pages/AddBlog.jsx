@@ -31,7 +31,8 @@ const AddBlog = () => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/blog`,
-        blogInfo
+        blogInfo,
+        { withCredentials: true }
       );
       e.target.reset();
       toast.success("Blog posted successfully.");

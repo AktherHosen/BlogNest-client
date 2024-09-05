@@ -125,7 +125,7 @@ const Navbar = () => {
                     style={{
                       backgroundColor: "#00579a",
                     }}
-                    label="Md. Akther Hosen"
+                    label={user?.displayName}
                   >
                     <Dropdown.Header>
                       <div className="flex flex-row-reverse items-center gap-x-2">

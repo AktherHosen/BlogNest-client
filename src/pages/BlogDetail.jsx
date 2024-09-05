@@ -29,9 +29,9 @@ const BlogDetail = () => {
 
   const handleBlogDelete = async (id) => {
     try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/blog/${id}`
-      );
+      await axios.delete(`${import.meta.env.VITE_API_URL}/blog/${id}`, {
+        withCredentials: true,
+      });
       toast.success("Blog deleted successfully.");
       navigate("/blogs");
     } catch (err) {
@@ -59,7 +59,17 @@ const BlogDetail = () => {
         commentInfo
       );
       toast.success("Comment added successfully.");
-      setComments((prevComments) => [...prevComments, data]);
+
+      // Manually update comments state by appending new comment
+      setComments((prevComments) => [
+        ...prevComments,
+        {
+          ...data,
+          commentUserName: user?.displayName,
+          commentUserPhoto: user?.photoURL,
+        },
+      ]);
+
       form.reset();
     } catch (err) {
       toast.error(err?.message);
@@ -218,7 +228,7 @@ const BlogDetail = () => {
       {/* Show comments */}
       <div className="my-4 max-w-2xl">
         <h3 className="text-2xl font-semibold font-suse">
-          ({comments.length}) Comments
+          ({comments?.length}) Comments
         </h3>
         <div className="grid grid-cols-1">
           {loading
@@ -232,21 +242,19 @@ const BlogDetail = () => {
                   </div>
                 </div>
               ))
-            : comments.map((comment) => (
-                <div key={comment._id} className="flex sm:flex-row mt-4 gap-2">
+            : comments.map((com) => (
+                <div key={com._id} className="flex sm:flex-row mt-4 gap-2">
                   <div className="">
                     <img
-                      src={comment.commentUserPhoto}
+                      src={com?.commentUserPhoto}
                       alt=""
                       className="h-[50px] w-[50px] rounded-full mt-1 "
                     />
                   </div>
                   <div className="flex-1">
                     <div>
-                      <h4 className="font-semibold">
-                        {comment.commentUserName}
-                      </h4>
-                      <p className="">{comment.comment}</p>
+                      <h4 className="font-semibold">{com?.commentUserName}</h4>
+                      <p className="">{com?.comment}</p>
                     </div>
                   </div>
                 </div>
@@ -265,7 +273,7 @@ const BlogDetail = () => {
             />
           </div>
           <div className="flex-1">
-            <form onSubmit={handleCommentPost}>
+            <form onSubmit={handleCommentPost} className="max-w-xl">
               <div>
                 <label
                   htmlFor="comment"
@@ -276,7 +284,7 @@ const BlogDetail = () => {
                 <textarea
                   id="comment"
                   name="comment"
-                  className="block w-full mt-2 p-2 border rounded-sm shadow-sm focus:outline-primary"
+                  className="block w-full mt-2 p-2 border shadow-sm focus:outline-primary resize-none rounded-md"
                   placeholder="Your comment"
                   rows="5"
                   required

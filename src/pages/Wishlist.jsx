@@ -10,19 +10,22 @@ import "react-loading-skeleton/dist/skeleton.css";
 const Wishlist = () => {
   const { user } = useAuth();
   const [wishlist, setWishlist] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/wishlist?email=${user?.email}`
+        `${import.meta.env.VITE_API_URL}/wishlist?email=${user?.email}`,
+        {
+          withCredentials: true,
+        }
       );
-      console.log("Fetched wishlist data:", data); // Check the structure
+      console.log("Fetched wishlist data:", data);
       setWishlist(data);
     } catch (error) {
       console.error("Failed to fetch wishlist", error);
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
@@ -34,16 +37,15 @@ const Wishlist = () => {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/wishlist/${_id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/wishlist/${_id}`, {
+        withCredentials: true,
+      });
       toast.success("Wishlist blog deleted successfully.");
       getData();
     } catch (err) {
       toast.error(err?.message);
     }
   };
-
-  // Number of skeleton items to display
-  const skeletonCount = 6;
 
   return (
     <div className="my-4">
@@ -55,8 +57,7 @@ const Wishlist = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
         {loading ? (
-          // Render skeletons while loading
-          Array.from({ length: skeletonCount }).map((_, idx) => (
+          Array.from({ length: 6 }).map((_, idx) => (
             <div key={idx} className="w-full min-h-[400px]">
               <Skeleton height={250} />
               <div className="mt-2 space-y-2 min-h-[160px]">
@@ -89,7 +90,7 @@ const Wishlist = () => {
                   className="rounded-lg border w-full h-[250px]"
                 />
               </Link>
-              <div className="mt-2 space-y-2 min-h-[160px]">
+              <div className="mt-2 space-y-2 min-h-[180px]">
                 <div className="flex justify-between items-center">
                   <button className="bg-primary text-white font-semibold px-3 rounded-lg text-xs py-1">
                     {blog.category}
