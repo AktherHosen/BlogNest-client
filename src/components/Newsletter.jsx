@@ -14,9 +14,9 @@ const Newsletter = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="md:cols-span-1 flex items-center justify-center border-dashed border-b md:border-b-0 md:border-r border-gray-100 border-opacity-80">
           <svg
-            width={120}
-            height={120}
-            className="w-[120px] h-[120px]"
+            width={200}
+            height={200}
+            className="w-[200px] h-[200px]"
             viewBox="0 0 24 24"
             id="email-file"
             data-name="Flat Color"

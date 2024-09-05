@@ -8,7 +8,7 @@ import "react-photo-view/dist/react-photo-view.css";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-
+import catImg from "../assets/cat.jpg";
 const RecentBlogs = () => {
   const [latestBlogs, setLatestBlogs] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
@@ -62,11 +62,9 @@ const RecentBlogs = () => {
     <div className="my-6">
       <h1 className="text-xl font-suse uppercase font-bold">Recent Blogs</h1>
       <hr className="flex-1 h-[1px] my-2 bg-primary" />
-
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         <div className="lg:col-span-3">
           {loading ? (
-            // Render skeletons while loading
             Array.from({ length: 6 }).map((_, idx) => (
               <div
                 key={idx}
@@ -151,7 +149,7 @@ const RecentBlogs = () => {
             <p>No recent blogs available.</p>
           )}
           <div className="flex justify-center my-4 ">
-            <div className="hover:scale-90 w-fit">
+            <div className="hover:scale-90 w-fit hover:transtion-all duration-300">
               <Link
                 to="/blogs"
                 className="text-white border-2 px-6 py-2 rounded-sm bg-primary transition-all duration-200"
@@ -162,34 +160,100 @@ const RecentBlogs = () => {
           </div>
         </div>
         <div className="w-full lg:col-span-1">
-          <div className="w-full px-4 py-2 mb-2 rounded-md bg-[#ecebeb] text-black">
-            Browse Categories
+          <div className="w-full flex items-center justify-center h-[50px] mx-auto px-4 py-2 mb-2 rounded-sm bg-[#f6f6f6] text-black">
+            <h3>Browse Categories</h3>
           </div>
           <div className="flex flex-col gap-2 gap-y-2">
-            <div>
-              <button className="px-4 py-1 text-sm bg-primary text-white rounded-full">
+            <div
+              style={{
+                backgroundImage: `url(${catImg})`,
+                height: "50px",
+                objectFit: "cover",
+                objectPosition: "center",
+                backgroundPosition: "center",
+                borderRadius: "4px",
+                position: "relative",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <h3 className="relative text-white text-center">
                 Tech and Gadgets
-              </button>
+              </h3>
             </div>
-            <div>
-              <button className="px-4 py-1 text-sm bg-primary text-white rounded-full">
-                Education
-              </button>
+            <div
+              style={{
+                backgroundImage: `url(${catImg})`,
+                height: "50px",
+                objectFit: "cover",
+                objectPosition: "center",
+                backgroundPosition: "center",
+                borderRadius: "4px",
+                position: "relative",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <h3 className="relative text-white text-center">Education</h3>
             </div>
-            <div>
-              <button className="px-4 py-1 text-sm bg-primary text-white rounded-full">
+            <div
+              style={{
+                backgroundImage: `url(${catImg})`,
+                height: "50px",
+                objectFit: "cover",
+                objectPosition: "center",
+                backgroundPosition: "center",
+                borderRadius: "4px",
+                position: "relative",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <h3 className="relative text-white text-center">
                 Travel Adventure
-              </button>
+              </h3>
             </div>
-            <div>
-              <button className="px-4 py-1 text-sm bg-primary text-white rounded-full">
-                Lifestyle
-              </button>
+            <div
+              style={{
+                backgroundImage: `url(${catImg})`,
+                height: "50px",
+                objectFit: "cover",
+                objectPosition: "center",
+                backgroundPosition: "center",
+                borderRadius: "4px",
+                position: "relative",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <h3 className="relative text-white text-center">Lifestyle</h3>
             </div>
-            <div>
-              <button className="px-4 py-1 text-sm bg-primary text-white rounded-full">
+            <div
+              style={{
+                backgroundImage: `url(${catImg})`,
+                height: "50px",
+                objectFit: "cover",
+                objectPosition: "center",
+                backgroundPosition: "center",
+                borderRadius: "4px",
+                position: "relative",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <h3 className="relative text-white text-center">
                 Science and Innovation
-              </button>
+              </h3>
             </div>
           </div>
           <div

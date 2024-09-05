@@ -86,7 +86,7 @@ const BlogDetail = () => {
     <div>
       <div className="my-4 flex justify-between items-center">
         <div>
-          <h1 className="">
+          <h1>
             <span className="font-suse text-primary text-lg font-semibold">
               {loading ? <Skeleton width={150} /> : blogTitle}
             </span>
@@ -120,66 +120,89 @@ const BlogDetail = () => {
         </div>
       </div>
       <div>
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 lg:gap-6">
-            <div className="col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 lg:gap-6">
+          {/* Image Section */}
+          <div className="col-span-2 overflow-hidden rounded-lg">
+            {loading ? (
               <Skeleton height={500} className="rounded-lg" />
-            </div>
-            <div className="col-span-1 w-full text-center">
-              <Skeleton height={300} className="rounded-lg mb-4" />
-              <Skeleton height={24} width="80%" className="mx-auto mb-2" />
-              <Skeleton height={20} width="60%" className="mx-auto" />
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 lg:gap-6">
-            <div className="col-span-2 overflow-hidden">
+            ) : (
               <img
                 src={photo}
-                className="max-h-[500px] w-full object-top rounded-lg object-cover transform transition-transform duration-500 hover:scale-110"
+                className="max-h-[500px] w-full object-top rounded-lg object-cover duration-500 hover:scale-110 hover:rounded-lg transition-all"
                 alt={blogTitle}
               />
-            </div>
-            <div className="col-span-1 w-full text-center">
-              <div>
-                <img
-                  src={author.photo}
-                  alt=""
-                  className="h-[300px] w-full border rounded-lg mb-4"
-                />
-                <h3 className="text-lg font-semibold">{author?.name}</h3>
-                <h4 className="text-sm font-semibold my-1">{email}</h4>
+            )}
+          </div>
+
+          {/* Author Information Section */}
+          <div className="flex justify-end col-span-1 text-center w-full">
+            <div className="w-full lg:w-[380px]">
+              {/* About Author heading */}
+              <div className="border w-full mb-4 py-2 rounded-sm">
+                <h3 className="font-rubik">About Author</h3>
+              </div>
+
+              {/* Author Card */}
+              <div className="h-[300px] border rounded-lg hover:bg-primary hover:text-white hover:transition-all hover:bg-opacity-80 duration-300 hover:rounded-lg">
+                {loading ? (
+                  <>
+                    <Skeleton
+                      height={150}
+                      width={150}
+                      className="mx-auto rounded-full mb-4"
+                    />
+                    <Skeleton
+                      height={24}
+                      width="80%"
+                      className="mx-auto mb-2"
+                    />
+                    <Skeleton height={20} width="60%" className="mx-auto" />
+                  </>
+                ) : (
+                  <>
+                    <div className="flex justify-center">
+                      <img
+                        src={author?.photo}
+                        alt={author?.name}
+                        className="h-[150px] w-[150px] mt-4 rounded-full mb-4 border shadow-sm p-2"
+                      />
+                    </div>
+                    <h3 className="text-lg font-semibold">{author?.name}</h3>
+                    <h4 className="text-sm font-semibold my-1">{email}</h4>
+                  </>
+                )}
               </div>
             </div>
           </div>
-        )}
+        </div>
 
         <div className="mt-2 space-y-2 min-h-[160px]">
-          <div>
-            <div className="flex gap-4 items-center font-rubik">
-              <div>
-                <h3 className="text-gray-600 text-sm font-semibold capitalize">
-                  BY{" "}
-                  <span className="text-lg">
-                    {loading ? <Skeleton width={80} /> : author?.name}
-                  </span>
-                </h3>
-              </div>
-              <span>-</span>
-              <p className="text-gray-600 text-lg font-medium">
+          <div className="flex gap-4 items-center font-rubik">
+            <div>
+              <h3 className="font-rubik">
+                <span className="text-sm">By </span>
                 {loading ? (
-                  <Skeleton width={100} />
+                  <Skeleton width={100} height={20} />
                 ) : (
-                  new Date(postedDate).toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })
+                  <span className="font-semibold text-gray-600">
+                    {author?.name}
+                  </span>
+                )}{" "}
+                -{" "}
+                {loading ? (
+                  <Skeleton width={80} height={20} />
+                ) : (
+                  <span className="font-semibold text-gray-600">
+                    {new Date(postedDate).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
                 )}
-              </p>
+              </h3>
             </div>
           </div>
-
           <h2 className="font-normal font-rubik text-lg">
             {loading ? <Skeleton width={200} /> : blogTitle}
           </h2>
@@ -199,8 +222,7 @@ const BlogDetail = () => {
         </h3>
         <div className="grid grid-cols-1">
           {loading
-            ? // Render skeleton loaders while loading
-              Array.from({ length: 3 }).map((_, index) => (
+            ? Array.from({ length: 3 }).map((_, index) => (
                 <div key={index} className="flex sm:flex-row mt-4 gap-2">
                   <Skeleton circle={true} height={50} width={50} />
                   <div className="flex-1">
@@ -254,11 +276,14 @@ const BlogDetail = () => {
                 <textarea
                   id="comment"
                   name="comment"
-                  className="h-20 w-full lg:max-w-xl resize-none rounded-sm outline-none border p-2"
+                  className="block w-full mt-2 p-2 border rounded-sm shadow-sm focus:outline-primary"
+                  placeholder="Your comment"
+                  rows="5"
+                  required
                 ></textarea>
               </div>
-              <div className="flex justify-end mt-2 lg:max-w-xl">
-                <button className="bg-primary px-4 py-2 rounded-full text-white">
+              <div className="mt-3">
+                <button className="px-4 py-2 rounded-sm bg-primary text-white">
                   Comment
                 </button>
               </div>
@@ -266,11 +291,9 @@ const BlogDetail = () => {
           </div>
         </div>
       ) : (
-        <div className="flex gap-2 items-center">
-          <BiSolidErrorCircle size={25} className="text-red-600" />
-          <h3 className="font-suse font-semibold">
-            Sorry! You cannot comment on your own blog.
-          </h3>
+        <div className="text-error  flex gap-2 items-center font-semibold font-rubik">
+          <BiSolidErrorCircle size={20} />
+          <p className="">You cannot comment on your own blog</p>
         </div>
       )}
     </div>
