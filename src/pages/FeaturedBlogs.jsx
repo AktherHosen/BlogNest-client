@@ -1,12 +1,12 @@
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Table } from "flowbite-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useSortBy, useTable } from "react-table";
 
 const FeaturedBlogs = () => {
   const [topPosts, setTopPosts] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
@@ -24,12 +24,46 @@ const FeaturedBlogs = () => {
       } catch (error) {
         console.error("Error fetching blogs:", error);
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
 
     getData();
   }, []);
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Serial Number",
+        accessor: (_, idx) => idx + 1,
+      },
+      {
+        Header: "Blog Title",
+        accessor: "blogTitle",
+      },
+      {
+        Header: "Blog Owner",
+        accessor: "author.name",
+      },
+      {
+        Header: "Blog Owner Photo",
+        accessor: "author.photo",
+        Cell: ({ value }) => (
+          <img src={value} className="h-[40px] w-[40px] rounded-full" alt="" />
+        ),
+      },
+    ],
+    []
+  );
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data: topPosts,
+      },
+      useSortBy
+    );
 
   return (
     <div className="my-4">
@@ -37,70 +71,73 @@ const FeaturedBlogs = () => {
         <h1 className="text-xl mb-4 font-suse text-primary font-semibold">
           Featured Blogs
         </h1>
-        <Table hoverable>
-          <Table.Head>
-            <Table.HeadCell>Serial Number</Table.HeadCell>
-            <Table.HeadCell>Blog Title</Table.HeadCell>
-            <Table.HeadCell>Blog Owner</Table.HeadCell>
-            <Table.HeadCell className="text-center">
-              Blog Owner Photo
-            </Table.HeadCell>
-          </Table.Head>
-          <Table.Body className="divide-y">
-            {loading
-              ? // Render skeletons while loading
-                Array.from({ length: 10 }).map((_, idx) => (
-                  <Table.Row
-                    key={idx}
-                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+        <table
+          {...getTableProps()}
+          className="min-w-full divide-y divide-gray-200"
+        >
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    key={column.id}
                   >
-                    <Table.Cell className="font-medium text-gray-400">
-                      <Skeleton width={50} />
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap">
-                      <Skeleton width={200} />
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Skeleton width={100} />
-                    </Table.Cell>
-                    <Table.Cell
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Skeleton circle={true} height={40} width={40} />
-                    </Table.Cell>
-                  </Table.Row>
-                ))
-              : topPosts.map((top, idx) => (
-                  <Table.Row
-                    key={top._id}
-                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                  >
-                    <Table.Cell className="font-medium text-gray-400">
-                      {idx + 1}
-                    </Table.Cell>
-                    <Table.Cell className="whitespace-nowrap">
-                      {top.blogTitle}
-                    </Table.Cell>
-                    <Table.Cell>{top?.author?.name}</Table.Cell>
-                    <Table.Cell
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <img
-                        src={top?.author?.photo}
-                        className="h-[40px] w-[40px] rounded-full"
-                        alt=""
-                      />
-                    </Table.Cell>
-                  </Table.Row>
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽"
+                          : " 🔼"
+                        : ""}
+                    </span>
+                  </th>
                 ))}
-          </Table.Body>
-        </Table>
+              </tr>
+            ))}
+          </thead>
+          <tbody
+            {...getTableBodyProps()}
+            className="bg-white divide-y divide-gray-200"
+          >
+            {loading
+              ? Array.from({ length: 10 }).map((_, idx) => (
+                  <tr key={`loading-row-${idx}`}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Skeleton width={50} />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Skeleton width={200} />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Skeleton width={100} />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Skeleton circle={true} height={40} width={40} />
+                    </td>
+                  </tr>
+                ))
+              : rows.map((row) => {
+                  prepareRow(row);
+                  let rowId = row._id;
+
+                  return (
+                    <tr {...row.getRowProps()} key={rowId}>
+                      {row.cells.map((cell) => (
+                        <td
+                          {...cell.getCellProps()}
+                          className="px-6 py-4 whitespace-nowrap"
+                          key={cell.column.id}
+                        >
+                          {cell.render("Cell")}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
+          </tbody>
+        </table>
       </div>
     </div>
   );
