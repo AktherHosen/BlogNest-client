@@ -6,13 +6,13 @@ import logo from "../../assets/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
-import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Registration = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state || "/";
-
+  const axiosSecure = useAxiosSecure();
   const { createUser, setUser, updateUserProfile } = useAuth();
   const handleRegistration = async (e) => {
     e.preventDefault();
@@ -42,13 +42,9 @@ const Registration = () => {
       await updateUserProfile(name, photo);
       setUser({ ...result?.user, photoURL: photo, displayName: name });
       // jwt
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/jwt`,
-        {
-          email: result?.user?.email,
-        },
-        { withCredentials: true }
-      );
+      const { data } = await axiosSecure.post(`/jwt`, {
+        email: result?.user?.email,
+      });
 
       toast.success("Registration successful.");
       e.target.reset();

@@ -3,11 +3,13 @@ import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const UpdateBlog = () => {
   const { user } = useAuth();
   const blog = useLoaderData();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
   const {
     _id,
     blogTitle,
@@ -42,11 +44,7 @@ const UpdateBlog = () => {
       },
     };
     try {
-      const { data } = await axios.put(
-        `${import.meta.env.VITE_API_URL}/blog/${_id}`,
-        blogInfo,
-        { withCredentials: true }
-      );
+      const { data } = await axiosSecure.put(`/blog/${_id}`, blogInfo);
       e.target.reset();
       toast.success("Blog updated successfully.");
       navigate("/blogs");

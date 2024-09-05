@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { AiFillDelete } from "react-icons/ai";
 import { BiSolidErrorCircle } from "react-icons/bi";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css"; // Import CSS for Skeleton
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const BlogDetail = () => {
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ const BlogDetail = () => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const {
     _id,
     blogTitle,
@@ -29,9 +30,7 @@ const BlogDetail = () => {
 
   const handleBlogDelete = async (id) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/blog/${id}`, {
-        withCredentials: true,
-      });
+      await axiosSecure.delete(`/blog/${id}`);
       toast.success("Blog deleted successfully.");
       navigate("/blogs");
     } catch (err) {
@@ -54,19 +53,16 @@ const BlogDetail = () => {
     };
 
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/comment`,
-        commentInfo
-      );
+      const { data } = await axiosSecure.post(`/comment`, commentInfo);
       toast.success("Comment added successfully.");
 
-      // Manually update comments state by appending new comment
       setComments((prevComments) => [
         ...prevComments,
         {
           ...data,
           commentUserName: user?.displayName,
           commentUserPhoto: user?.photoURL,
+          comment: comment,
         },
       ]);
 
@@ -78,11 +74,9 @@ const BlogDetail = () => {
 
   const getData = async () => {
     try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/comments?blogId=${_id}`
-      );
+      const { data } = await axiosSecure.get(`/comments?blogId=${_id}`);
       setComments(data);
-      setLoading(false); // Set loading to false after comments are fetched
+      setLoading(false);
     } catch (err) {
       console.error("Error fetching comments:", err);
     }

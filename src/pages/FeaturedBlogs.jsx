@@ -3,15 +3,17 @@ import React, { useEffect, useState } from "react";
 import { Table } from "flowbite-react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const FeaturedBlogs = () => {
   const [topPosts, setTopPosts] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios(`${import.meta.env.VITE_API_URL}/blogs`);
+        const { data } = await axiosSecure(`/blogs`);
         const topPosts = data
           .sort(
             (a, b) =>
@@ -24,7 +26,7 @@ const FeaturedBlogs = () => {
       } catch (error) {
         console.error("Error fetching blogs:", error);
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
 

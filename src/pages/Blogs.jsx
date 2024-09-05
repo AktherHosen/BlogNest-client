@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import BlogCard from "../components/BlogCard";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [filter, setFilter] = useState("");
   const { user } = useAuth();
-
+  const axiosSecure = useAxiosSecure();
   useEffect(() => {
     const getData = async () => {
       try {
-        setLoading(true); // Start loading
-        const { data } = await axios.get(
-          `${
-            import.meta.env.VITE_API_URL
-          }/all-blogs?search=${searchText}&filter=${filter}`
+        setLoading(true);
+        const { data } = await axiosSecure.get(
+          `/all-blogs?search=${searchText}&filter=${filter}`
         );
         setBlogs(data);
-        setLoading(false); // Stop loading
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching blogs:", error);
-        setLoading(false); // Stop loading on error
+        setLoading(false);
       }
     };
 
@@ -47,11 +45,7 @@ const Blogs = () => {
     };
 
     try {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/wishlist`,
-        wishListInfo,
-        { withCredentials: true }
-      );
+      await axiosSecure.post(`/wishlist`, wishListInfo);
       toast.success("Added to wishlist");
     } catch (err) {
       toast.error("Error adding to wishlist");

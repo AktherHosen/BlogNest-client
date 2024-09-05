@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 const AddBlog = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const handleBlogPost = async (e) => {
     e.preventDefault();
     const postedDate = new Date();
@@ -29,11 +31,7 @@ const AddBlog = () => {
     };
     console.log(blogInfo);
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/blog`,
-        blogInfo,
-        { withCredentials: true }
-      );
+      const { data } = await axiosSecure.post(`/blog`, blogInfo);
       e.target.reset();
       toast.success("Blog posted successfully.");
     } catch (err) {

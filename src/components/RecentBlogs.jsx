@@ -9,17 +9,16 @@ import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import catImg from "../assets/cat.jpg";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 const RecentBlogs = () => {
   const [latestBlogs, setLatestBlogs] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
   const { user } = useAuth();
-
+  const axiosSecure = useAxiosSecure();
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/blogs`
-        );
+        const { data } = await axiosSecure.get(`/blogs`);
         const sortedBlogs = data.sort(
           (a, b) => new Date(b.postedDate) - new Date(a.postedDate)
         );
@@ -27,7 +26,7 @@ const RecentBlogs = () => {
       } catch (err) {
         toast.error(err?.message);
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
 
@@ -48,11 +47,7 @@ const RecentBlogs = () => {
     };
 
     try {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/wishlist`,
-        wishListInfo,
-        { withCredentials: true }
-      );
+      await axiosSecure.post(`/wishlist`, wishListInfo);
       toast.success("Added to wishlist");
     } catch (err) {
       toast.error("Error adding to wishlist");

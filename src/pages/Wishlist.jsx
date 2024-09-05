@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import { RiHeart2Fill, RiDeleteBin6Line } from "react-icons/ri";
+import {  RiDeleteBin6Line } from "react-icons/ri";
 import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const Wishlist = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getData = async () => {
     try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_API_URL}/wishlist?email=${user?.email}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const { data } = await axiosSecure.get(`/wishlist?email=${user?.email}`);
       console.log("Fetched wishlist data:", data);
       setWishlist(data);
     } catch (error) {
@@ -37,9 +33,7 @@ const Wishlist = () => {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/wishlist/${_id}`, {
-        withCredentials: true,
-      });
+      await axiosSecure.delete(`/wishlist/${_id}`);
       toast.success("Wishlist blog deleted successfully.");
       getData();
     } catch (err) {
