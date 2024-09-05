@@ -1,13 +1,13 @@
 import { FaGoogle } from "react-icons/fa";
 import logo from "../../assets/logo.png";
-import { Link, replace, useLocation } from "react-router-dom";
+import { Link, replace, useLocation, useNavigate } from "react-router-dom";
 
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useAuth();
-  const location = useLocation();
+  const navigate = useNavigate();
   // #Email password sign in
   const handleLogin = async (e) => {
     e.preventDefault();

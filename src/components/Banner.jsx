@@ -6,24 +6,24 @@ import { Link } from "react-router-dom";
 const Banner = () => {
   const { user } = useAuth();
   const [backgroundImage, setBackgroundImage] = useState(
-    "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80"
+    "https://i.ibb.co/WgHMbqf/banner1.jpg"
   );
   const [prevImage, setPrevImage] = useState(backgroundImage);
   const [fadeIn, setFadeIn] = useState(true);
 
   useEffect(() => {
     const images = [
-      "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80",
-      "https://tse3.mm.bing.net/th?id=OIP.-BynZLaMlzAk3s_eqMjHGwHaEv&pid=Api&P=0&h=220",
-      "https://tse3.mm.bing.net/th?id=OIP.tORBD0OTLb41Ky81Nad1LAHaEO&pid=Api&P=0&h=220",
+      "https://i.ibb.co/WgHMbqf/banner1.jpg",
+      "https://i.ibb.co/mqDdGrc/banner2.png",
+      "https://i.ibb.co/b3bBSGf/banner3-2.png",
     ];
 
     const interval = setInterval(() => {
-      setPrevImage(backgroundImage);
       setFadeIn(false);
 
       const currentIndex = images.indexOf(backgroundImage);
       const nextIndex = (currentIndex + 1) % images.length;
+      setPrevImage(backgroundImage);
       setBackgroundImage(images[nextIndex]);
 
       setTimeout(() => {

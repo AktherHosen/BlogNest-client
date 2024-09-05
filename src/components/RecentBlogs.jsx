@@ -106,7 +106,7 @@ const RecentBlogs = () => {
                         <img
                           src={blog?.photo}
                           alt=""
-                          className="h-[250px] w-full"
+                          className="h-[250px] w-full rounded-md"
                         />
                       </PhotoView>
                     </PhotoProvider>
@@ -166,7 +166,7 @@ const RecentBlogs = () => {
           <div className="flex flex-col gap-2 gap-y-2">
             <div
               style={{
-                backgroundImage: `url(${catImg})`,
+                backgroundImage: `url('https://i.ibb.co/8MCR96L/cat1.png')`,
                 height: "50px",
                 objectFit: "cover",
                 objectPosition: "center",
@@ -176,16 +176,18 @@ const RecentBlogs = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "full",
               }}
             >
-              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <div className="absolute inset-0 bg-black opacity-40 mix-blend-darken"></div>
               <h3 className="relative text-white text-center">
                 Tech and Gadgets
               </h3>
             </div>
             <div
               style={{
-                backgroundImage: `url(${catImg})`,
+                backgroundImage: `url('https://i.ibb.co/qprk197/kimberly-farmer-l-Uaa-KCUANVI-unsplash.png')`,
                 height: "50px",
                 objectFit: "cover",
                 objectPosition: "center",
@@ -195,14 +197,16 @@ const RecentBlogs = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "full",
               }}
             >
-              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <div className="absolute inset-0 bg-black opacity-40 mix-blend-darken"></div>
               <h3 className="relative text-white text-center">Education</h3>
             </div>
             <div
               style={{
-                backgroundImage: `url(${catImg})`,
+                backgroundImage: `url('https://i.ibb.co/ZXWsQrb/travel-1.png')`,
                 height: "50px",
                 objectFit: "cover",
                 objectPosition: "center",
@@ -212,16 +216,18 @@ const RecentBlogs = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "full",
               }}
             >
-              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <div className="absolute inset-0 bg-black opacity-40 mix-blend-darken"></div>
               <h3 className="relative text-white text-center">
                 Travel Adventure
               </h3>
             </div>
             <div
               style={{
-                backgroundImage: `url(${catImg})`,
+                backgroundImage: `url('https://i.ibb.co/LvkMhLv/lifestyle.png')`,
                 height: "50px",
                 objectFit: "cover",
                 objectPosition: "center",
@@ -231,14 +237,16 @@ const RecentBlogs = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "full",
               }}
             >
-              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <div className="absolute inset-0 bg-black opacity-40 mix-blend-darken"></div>
               <h3 className="relative text-white text-center">Lifestyle</h3>
             </div>
             <div
               style={{
-                backgroundImage: `url(${catImg})`,
+                backgroundImage: `url('https://i.ibb.co/P43W20Z/cat5-1.png')`,
                 height: "50px",
                 objectFit: "cover",
                 objectPosition: "center",
@@ -248,9 +256,11 @@ const RecentBlogs = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "full",
               }}
             >
-              <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+              <div className="absolute inset-0 bg-black opacity-40 mix-blend-darken"></div>
               <h3 className="relative text-white text-center">
                 Science and Innovation
               </h3>
@@ -259,11 +269,11 @@ const RecentBlogs = () => {
           <div
             className="mt-4 relative bg-cover bg-center h-[400px]"
             style={{
-              backgroundImage: `url('https://tse4.mm.bing.net/th?id=OIP.C0xRH3uE7SXLVwYjHt7zPAHaLL&pid=Api&P=0&h=220')`,
+              backgroundImage: `url('https://i.ibb.co/28SqX1D/jess-bailey-PWxs-Exxrf5g-unsplash.png')`,
             }}
           >
             {/* Dark Overlay */}
-            <div className="absolute inset-0 bg-black opacity-25 mix-blend-darken"></div>
+            <div className="absolute inset-0 bg-black opacity-40 mix-blend-darken"></div>
 
             {/* Content */}
             <div className="relative z-10 p-8 text-white flex flex-col items-center justify-center h-full text-center">
