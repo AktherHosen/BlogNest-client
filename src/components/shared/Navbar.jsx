@@ -71,7 +71,7 @@ const Navbar = () => {
                 : "opacity-0 -translate-x-full"
             }`}
           >
-            <div className="flex flex-col -mx-6 lg:flex-row lg:justify-evenly lg:items-center lg:ms-5">
+            <div className="flex flex-col -mx-6 lg:flex-row lg:justify-evenly lg:items-center lg:mx-4">
               <NavLink
                 to="/"
                 className={({ isActive }) =>
@@ -120,7 +120,7 @@ const Navbar = () => {
 
             {user && (
               <>
-                <div className="flex items-center mt-4 ml-3 lg:mt-0">
+                <div className="flex items-center -mx-3 lg:mx-0 mt-4 lg:mt-0 ">
                   <Dropdown
                     style={{
                       backgroundColor: "#00579a",
