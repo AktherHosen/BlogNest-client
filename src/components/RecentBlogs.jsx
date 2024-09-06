@@ -36,7 +36,7 @@ const RecentBlogs = () => {
   });
 
   const handleWithlist = async (id) => {
-    if (!user?.email) {
+    if (!user) {
       return toast.error("You can't add to wishlist without logging in.");
     }
     const wishlistDate = new Date();
@@ -145,7 +145,7 @@ const RecentBlogs = () => {
                             bounceDamping: 10,
                             bounceStiffness: 600,
                           }}
-                          onClick={() => handleWithlist(_id)}
+                          onClick={() => handleWithlist(blog?._id)}
                           className="text-2xl text-primary"
                           title="Wishlist"
                         >
