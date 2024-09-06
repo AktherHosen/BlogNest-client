@@ -22,33 +22,39 @@ const Footer = () => {
           <ul>
             <li className="font-semibold mb-4">Quick Links</li>
             <li className="hover:underline text-gray-200">
-              <Link>Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li className="hover:underline text-gray-200">
-              <Link>Blogs</Link>
+              <Link to="/blogs">Blogs</Link>
             </li>
             <li className="hover:underline text-gray-200">
-              <Link>Login</Link>
+              <Link to="/my-wishlist">Wishlist</Link>
             </li>
             <li className="hover:underline text-gray-200">
-              <Link>Register</Link>
+              <Link to="/login">Login</Link>
+            </li>
+            <li className="hover:underline text-gray-200">
+              <Link to="/registration">Register</Link>
             </li>
           </ul>
         </div>
         <div className="col-span-1 mt-4 flex md:justify-center">
           <ul>
-            <li className="font-semibold mb-4">Quick Links</li>
+            <li className="font-semibold mb-4">Categories</li>
             <li className="hover:underline text-gray-200">
-              <Link>Home</Link>
+              <Link to="/blogs">Tech & Gadjets</Link>
             </li>
             <li className="hover:underline text-gray-200">
-              <Link>Blogs</Link>
+              <Link to="/blogs">Education</Link>
             </li>
             <li className="hover:underline text-gray-200">
-              <Link>Login</Link>
+              <Link to="/blogs">Travel Adventure</Link>
             </li>
             <li className="hover:underline text-gray-200">
-              <Link>Register</Link>
+              <Link to="/blogs">Lifestyle</Link>
+            </li>
+            <li className="hover:underline text-gray-200">
+              <Link to="/blogs">Science & Innovation</Link>
             </li>
           </ul>
         </div>

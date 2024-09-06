@@ -142,11 +142,11 @@ const BlogDetail = () => {
           {/* Image Section */}
           <div className="col-span-2 overflow-hidden rounded-lg">
             {blogLoading ? (
-              <Skeleton height={500} className="rounded-lg" />
+              <Skeleton height={450} className="rounded-lg" />
             ) : (
               <img
                 src={photo}
-                className="max-h-[500px] w-full object-top rounded-lg object-cover duration-500 hover:scale-110 hover:rounded-lg transition-all"
+                className="h-[450px] w-full object-top rounded-lg object-cover duration-500 hover:scale-110 hover:rounded-lg transition-all"
                 alt={blogTitle}
               />
             )}

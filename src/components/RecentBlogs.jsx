@@ -196,7 +196,20 @@ const RecentBlogs = () => {
         </div>
         <div className="w-full lg:col-span-1">
           <div className="w-full flex items-center justify-center h-[50px] mx-auto px-4 py-2 mb-2 rounded-sm bg-[#f6f6f6] text-black">
-            <h3>Browse Categories</h3>
+            <Link to="/blogs">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                whileHover={{
+                  scale: 1.1,
+                  backgroundColor: "#eeeded",
+                  color: "black",
+                }}
+                transition={{ bounceDamping: 10, bounceStiffness: 600 }}
+                className="px-4 py-2 w-full"
+              >
+                Browse Categories
+              </motion.button>
+            </Link>
           </div>
           <div className="flex flex-col gap-2 gap-y-2">
             <div
