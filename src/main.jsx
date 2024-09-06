@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AnimatePresence } from "framer-motion";
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
@@ -15,9 +16,10 @@ createRoot(document.getElementById("root")).render(
     <SkeletonTheme>
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
+          <AnimatePresence mode="wait">
+            <RouterProvider router={router} />
+          </AnimatePresence>
         </QueryClientProvider>
-
         <Toaster />
       </AuthProvider>
     </SkeletonTheme>

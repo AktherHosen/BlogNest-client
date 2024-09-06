@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 
 const BlogDetail = () => {
   const { id } = useParams();
@@ -105,19 +106,32 @@ const BlogDetail = () => {
 
         <div>
           {user?.email === email && !blogLoading && (
-            <div className="flex items-center gap-2">
-              <Link
-                to={`/update-blog/${_id}`}
-                className="hover:text-primary hover:transition-colors duration-200"
-              >
-                <FaEdit size={25} />
+            <div className="flex justify-center items-center gap-2 h-[50]">
+              <Link to={`/update-blog/${_id}`}>
+                <motion.button
+                  whileTap={{ scale: 0.9 }}
+                  whileHover={{
+                    scale: 1.3,
+                    color: "primary",
+                  }}
+                  transition={{ bounceDamping: 10, bounceStiffness: 600 }}
+                  className="hover:transition-colors duration-200 mt-1"
+                >
+                  <FaEdit size={25} />
+                </motion.button>
               </Link>
-              <button
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                whileHover={{
+                  scale: 1.3,
+                  color: "red",
+                }}
+                transition={{ bounceDamping: 10, bounceStiffness: 600 }}
                 onClick={() => handleBlogDelete(_id)}
-                className="hover:text-red-600 hover:transition-colors duration-200"
+                className="hover:transition-colors duration-200"
               >
                 <AiFillDelete size={25} />
-              </button>
+              </motion.button>
             </div>
           )}
         </div>
@@ -275,12 +289,19 @@ const BlogDetail = () => {
               className="w-full border p-2 rounded-md outline-none resize-none focus:border-primary h-[100px]"
             />
             <div className="flex justify-end">
-              <button
+              <motion.button
                 type="submit"
+                whileTap={{ scale: 0.9 }}
+                whileHover={{
+                  scale: 1,
+                  backgroundColor: "#1E1E1E",
+                  color: "white",
+                }}
+                transition={{ bounceDamping: 10, bounceStiffness: 600 }}
                 className="bg-primary text-white font-semibold px-4 py-2 rounded-md"
               >
                 Post Comment
-              </button>
+              </motion.button>
             </div>
           </form>
         </div>

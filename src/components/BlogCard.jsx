@@ -1,9 +1,7 @@
-import React from "react";
-import useAuth from "../hooks/useAuth";
 import { RiHeart2Fill } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 const BlogCard = ({ blog, handleWithlist }) => {
-  const { user } = useAuth();
   const {
     _id,
     blogTitle,
@@ -31,13 +29,19 @@ const BlogCard = ({ blog, handleWithlist }) => {
               {category}
             </button>
             <div className="flex gap-x-4 items-center flex-row-reverse">
-              <button
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                whileHover={{
+                  scale: 1.3,
+                  color: "red",
+                }}
+                transition={{ bounceDamping: 10, bounceStiffness: 600 }}
                 onClick={() => handleWithlist(_id)}
-                className="text-2xl hover:text-red-600"
+                className="text-2xl text-primary"
                 title="Wishlist"
               >
                 <RiHeart2Fill />
-              </button>
+              </motion.button>
               <p className="text-gray-600 text-sm font-medium ">
                 {new Date(postedDate).toLocaleDateString()}
               </p>

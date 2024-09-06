@@ -9,6 +9,8 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { motion } from "framer-motion";
+import { RiArrowRightDoubleFill } from "react-icons/ri";
 
 const RecentBlogs = () => {
   const { user } = useAuth();
@@ -93,7 +95,12 @@ const RecentBlogs = () => {
                 key={blog._id}
                 className="lg:col-span-3 grid grid-cols-1 gap-y-4 mb-6"
               >
-                <div className="flex flex-col md:flex-row gap-4">
+                <motion.div
+                  initial={{ x: -500 }}
+                  animate={{ x: 0 }}
+                  transition={{ duration: "2" }}
+                  className="flex flex-col md:flex-row gap-4"
+                >
                   <div className="w-full lg:w-1/3">
                     <PhotoProvider
                       speed={() => 800}
@@ -128,13 +135,22 @@ const RecentBlogs = () => {
                             }
                           )}
                         </p>
-                        <button
-                          onClick={() => handleWithlist(blog._id)}
-                          className="text-2xl hover:text-red-600"
+                        <motion.button
+                          whileTap={{ scale: 0.9 }}
+                          whileHover={{
+                            scale: 1.3,
+                            color: "red",
+                          }}
+                          transition={{
+                            bounceDamping: 10,
+                            bounceStiffness: 600,
+                          }}
+                          onClick={() => handleWithlist(_id)}
+                          className="text-2xl text-primary"
                           title="Wishlist"
                         >
                           <RiHeart2Fill />
-                        </button>
+                        </motion.button>
                       </div>
                     </div>
                     <h1 className="text-2xl font-suse hover:underline transition-all duration-300">
@@ -148,12 +164,12 @@ const RecentBlogs = () => {
                     </h4>
                     <Link
                       to={`/blog/${blog?._id}`}
-                      className="text-primary hover:underline"
+                      className="text-primary hover:underline flex items-center"
                     >
-                      Read More
+                      Read More <RiArrowRightDoubleFill />
                     </Link>
                   </div>
-                </div>
+                </motion.div>
               </div>
             ))
           ) : (
@@ -161,11 +177,19 @@ const RecentBlogs = () => {
           )}
           <div className="flex justify-center my-4 ">
             <div className="hover:scale-90 w-fit hover:transtion-all duration-300">
-              <Link
-                to="/blogs"
-                className="text-white border-2 px-6 py-2 rounded-sm bg-primary transition-all duration-200"
-              >
-                Load More
+              <Link to="/blogs">
+                <motion.button
+                  whileTap={{ scale: 0.9 }}
+                  whileHover={{
+                    scale: 1.1,
+                    backgroundColor: "#eeeded",
+                    color: "black",
+                  }}
+                  transition={{ bounceDamping: 10, bounceStiffness: 600 }}
+                  className="text-white border-2 px-6 py-2 rounded-sm bg-primary "
+                >
+                  Load More
+                </motion.button>
               </Link>
             </div>
           </div>

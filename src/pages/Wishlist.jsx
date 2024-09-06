@@ -7,7 +7,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
+import { motion } from "framer-motion";
 const Wishlist = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -96,13 +96,19 @@ const Wishlist = () => {
                     {blog.category}
                   </button>
                   <div className="flex gap-x-4 items-center flex-row-reverse">
-                    <button
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      whileHover={{
+                        scale: 1,
+                        color: "red",
+                      }}
+                      transition={{ bounceDamping: 10, bounceStiffness: 600 }}
                       onClick={() => handleDelete(blog._id)}
-                      className="text-2xl hover:text-red-600"
+                      className="text-2xl"
                       title="Delete"
                     >
                       <RiDeleteBin6Line />
-                    </button>
+                    </motion.button>
                     <p className="text-gray-600 text-sm font-medium">
                       {new Date(blog.wishlistDate).toLocaleDateString()}
                     </p>

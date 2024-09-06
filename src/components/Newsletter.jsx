@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-
+import { motion } from "framer-motion";
 const Newsletter = () => {
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -58,9 +58,18 @@ const Newsletter = () => {
                   placeholder="Email Adress...."
                   className="w-full lg:w-80 outline-none  py-2 border text-black"
                 />
-                <button className="bg-primary border px-4 py-2 outline-none ms-0 lg:ms-2 hover:bg-white hover:text-primary">
+                <motion.button
+                  whileTap={{ scale: 0.9 }}
+                  whileHover={{
+                    scale: 1.1,
+                    backgroundColor: "#00579a",
+                    color: "white",
+                  }}
+                  transition={{ bounceDamping: 10, bounceStiffness: 600 }}
+                  className="bg-primary border px-4 py-2 outline-none ms-0 lg:ms-2"
+                >
                   Subscribe
-                </button>
+                </motion.button>
               </form>
             </div>
           </div>

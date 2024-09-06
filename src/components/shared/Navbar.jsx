@@ -109,7 +109,7 @@ const Navbar = () => {
                     `px-6 py-2 mx-3 mt-2 me-5 rounded-full transition-colors duration-300 transform  lg:mt-0 ${
                       isActive
                         ? "bg-primary text-white"
-                        : "bg-primary text-white"
+                        : "bg-[#eeeded] text-blac"
                     } w-fit`
                   }
                 >

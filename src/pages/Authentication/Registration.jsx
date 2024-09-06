@@ -74,6 +74,7 @@ const Registration = () => {
                 <input
                   type="text"
                   name="name"
+                  required
                   className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   placeholder="Enter your name"
                 />
@@ -85,6 +86,7 @@ const Registration = () => {
                 <input
                   type="email"
                   name="email"
+                  required
                   className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   placeholder="Enter your email"
                 />
@@ -123,13 +125,14 @@ const Registration = () => {
                 <input
                   type="password"
                   name="pass"
-                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  required
+                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-blue-400  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   placeholder="Enter your password"
                 />
               </div>
 
               <div className="mt-6">
-                <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-primary rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
                   Sign Up
                 </button>
               </div>
@@ -146,13 +149,9 @@ const Registration = () => {
             </p>
           </div>
         </div>
-        <div
-          className="hidden bg-cover lg:block lg:w-1/2"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1606660265514-358ebbadc80d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1575&q=80')",
-          }}
-        ></div>
+        <div className="hidden w-full lg:block lg:w-1/2">
+          <img src="https://i.ibb.co/pdF924t/494640-PHEPSD-293-ai.png" alt="" />
+        </div>
       </div>
     </div>
   );

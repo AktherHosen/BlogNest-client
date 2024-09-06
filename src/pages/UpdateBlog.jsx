@@ -1,18 +1,25 @@
 import React from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
 const UpdateBlog = () => {
   const { user } = useAuth();
-  // const blog = useLoaderData();
-  const id = useParams();
+  const { id } = useParams(); // Corrected to destructure `id`
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
-  const { data: blog = [] } = useQuery();
+
+  const { data: blog = {} } = useQuery({
+    queryKey: ["blog", id],
+    queryFn: async () => {
+      const response = await axiosSecure.get(`/blog/${id}`);
+      return response.data;
+    },
+  });
+
   const {
     _id,
     blogTitle,
@@ -22,6 +29,7 @@ const UpdateBlog = () => {
     shortDescription,
     longDescription,
   } = blog;
+
   const handleUpdateBlog = async (e) => {
     e.preventDefault();
 
@@ -46,15 +54,16 @@ const UpdateBlog = () => {
         photo: user?.photoURL,
       },
     };
+
     try {
-      const { data } = await axiosSecure.put(`/blog/${_id}`, blogInfo);
-      e.target.reset();
+      await axiosSecure.put(`/blog/${_id}`, blogInfo);
       toast.success("Blog updated successfully.");
       navigate("/blogs");
     } catch (err) {
       toast.error(err?.message);
     }
   };
+
   return (
     <div className="my-4">
       <h1 className="text-lg font-suse text-primary font-semibold">
@@ -122,7 +131,6 @@ const UpdateBlog = () => {
               </label>
               <textarea
                 name="shortdescription"
-                id=""
                 defaultValue={shortDescription}
                 className="w-full h-32 resize-none rounded-sm outline-none"
                 placeholder="Short Description..."

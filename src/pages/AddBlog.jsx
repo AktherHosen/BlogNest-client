@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
-import axios from "axios";
+import { motion } from "framer-motion";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 const AddBlog = () => {
   const { user } = useAuth();
@@ -60,6 +60,7 @@ const AddBlog = () => {
                 id="blogTitle"
                 type="text"
                 name="blogTitle"
+                required
                 placeholder="Write blog title"
                 className="w-full rounded-sm outline-none"
               />
@@ -73,6 +74,7 @@ const AddBlog = () => {
               </label>
               <input
                 type="text"
+                required
                 name="photo"
                 placeholder="Blog photo url"
                 className="w-full rounded-sm outline-none"
@@ -88,6 +90,7 @@ const AddBlog = () => {
               <input
                 type="email"
                 name="email"
+                required
                 defaultValue={user?.email}
                 placeholder="Your Email"
                 className="w-full rounded-sm outline-none"
@@ -104,6 +107,7 @@ const AddBlog = () => {
               <textarea
                 name="shortdescription"
                 id=""
+                required
                 className="w-full h-32 resize-none rounded-sm outline-none"
                 placeholder="Short Description..."
               ></textarea>
@@ -139,15 +143,26 @@ const AddBlog = () => {
                 Long Description
               </label>
               <textarea
+                required
                 name="longdescription"
                 className="resize-none w-full h-48 rounded-sm outline-none"
                 placeholder="Long Description..."
               ></textarea>
             </div>
           </div>
-          <button className="bg-primary px-4 py-2 text-white font-semibold outline-none rounded-sm hover:bg-[#1E1E1E] hover:bg-blend-overlay hover:transition-colors duration-300">
-            Submit
-          </button>
+
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            whileHover={{
+              scale: 1,
+              backgroundColor: "#1E1E1E",
+              color: "white",
+            }}
+            transition={{ bounceDamping: 10, bounceStiffness: 600 }}
+            className="bg-primary px-6 py-2 text-white font-semibold outline-none rounded-sm hover:bg-blend-overlay hover:transition-colors duration-300"
+          >
+            Post
+          </motion.button>
         </form>
       </div>
     </div>

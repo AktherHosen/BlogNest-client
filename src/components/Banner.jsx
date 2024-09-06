@@ -2,7 +2,7 @@ import { Typewriter } from "react-simple-typewriter";
 import React, { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { Link } from "react-router-dom";
-
+import { motion } from "framer-motion";
 const Banner = () => {
   const { user } = useAuth();
   const [backgroundImage, setBackgroundImage] = useState(
@@ -67,18 +67,34 @@ const Banner = () => {
         </p>
         <div className="mt-6">
           {user ? (
-            <Link
-              to="/add-blog"
-              className="px-6 py-3 mt-4 text-lg font-medium leading-5 text-center text-white capitalize text-suse bg-primary rounded-md lg:mx-0 lg:w-auto focus:outline-none"
-            >
-              Write Blog
+            <Link to="/add-blog">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                whileHover={{
+                  scale: 1.1,
+                  backgroundColor: "#eeeded",
+                  color: "black",
+                }}
+                transition={{ bounceDamping: 10, bounceStiffness: 600 }}
+                className="px-6 py-3 mt-4 text-lg font-medium leading-5 text-center text-white capitalize text-suse bg-primary rounded-md lg:mx-0 lg:w-auto focus:outline-none"
+              >
+                Write Blog
+              </motion.button>
             </Link>
           ) : (
-            <Link
-              to="/login"
-              className="px-6 py-3 mt-4 text-lg font-medium leading-5 text-center text-white capitalize text-suse bg-primary rounded-md lg:mx-0 lg:w-auto focus:outline-none"
-            >
-              Write Blog
+            <Link to="/login">
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                whileHover={{
+                  scale: 1.1,
+                  backgroundColor: "#eeeded",
+                  color: "black",
+                }}
+                transition={{ bounceDamping: 10, bounceStiffness: 600 }}
+                className="px-6 py-3 mt-4 text-lg font-medium leading-5 text-center text-white capitalize text-suse bg-primary rounded-md lg:mx-0 lg:w-auto focus:outline-none"
+              >
+                Get Started
+              </motion.button>
             </Link>
           )}
         </div>
