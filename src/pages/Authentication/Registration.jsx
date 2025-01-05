@@ -1,12 +1,13 @@
 import React from "react";
 import { FaUser } from "react-icons/fa";
 import { MdMarkEmailUnread } from "react-icons/md";
-import { IoMdPhotos } from "react-icons/io";
+
 import logo from "../../assets/logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { imageUpload } from "../../api/utils";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -19,8 +20,20 @@ const Registration = () => {
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
-    const photo = form.photo.value;
+    const photo = form.photo.files[0];
     const pass = form.pass.value;
+
+    let image_url = "";
+    if (photo) {
+      try {
+        image_url = await imageUpload(photo);
+      } catch (err) {
+        console.error("Image upload failed:", err.message);
+        toast.error("Failed to upload profile photo.");
+        return;
+      }
+    }
+
     if (pass.length < 6) {
       toast.error("Your password must contains at least 6 character");
       return;
@@ -39,8 +52,8 @@ const Registration = () => {
     }
     try {
       const result = await createUser(email, pass);
-      await updateUserProfile(name, photo);
-      setUser({ ...result?.user, photoURL: photo, displayName: name });
+      await updateUserProfile(name, image_url);
+      setUser({ ...result?.user, photoURL: image_url, displayName: name });
       // jwt
       const { data } = await axiosSecure.post(`/jwt`, {
         email: result?.user?.email,
@@ -75,7 +88,7 @@ const Registration = () => {
                   type="text"
                   name="name"
                   required
-                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg  focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className=" w-full px-10 py-3 text-gray-700 bg-white  rounded-sm  "
                   placeholder="Enter your name"
                 />
               </div>
@@ -87,19 +100,16 @@ const Registration = () => {
                   type="email"
                   name="email"
                   required
-                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="block w-full py-3 text-gray-700 bg-white  rounded-sm px-11 "
                   placeholder="Enter your email"
                 />
               </div>
-              <div className="relative flex items-center mt-3">
-                <span className="absolute">
-                  <IoMdPhotos className="w-6 h-6 mx-3 text-gray-300" />
-                </span>
+              <div className=" mt-3">
                 <input
-                  type="text"
+                  type="file"
                   name="photo"
-                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                  placeholder="Enter your photo url"
+                  accept="image/*"
+                  className="border border-black  w-full text-gray-700 py-1 bg-white rounded-sm  "
                 />
               </div>
 
@@ -126,7 +136,7 @@ const Registration = () => {
                   type="password"
                   name="pass"
                   required
-                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg focus:border-blue-400  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  className="block w-full px-10 py-3 text-gray-700 bg-white border rounded-sm "
                   placeholder="Enter your password"
                 />
               </div>

@@ -3,6 +3,7 @@ import { toast } from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import { motion } from "framer-motion";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { imageUpload } from "../api/utils";
 const AddBlog = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -11,14 +12,26 @@ const AddBlog = () => {
     const postedDate = new Date();
     const form = e.target;
     const blogTitle = form.blogTitle.value;
-    const photo = form.photo.value;
+    const photo = form.photo.files[0];
     const email = form.email.value;
     const category = form.category.value;
     const shortDescription = form.shortdescription.value;
     const longDescription = form.longdescription.value;
+
+    let image_url = "";
+    if (photo) {
+      try {
+        image_url = await imageUpload(photo);
+      } catch (err) {
+        console.error("Image upload failed:", err.message);
+        toast.error("Failed to upload profile photo.");
+        return;
+      }
+    }
+
     const blogInfo = {
       blogTitle,
-      photo,
+      photo: image_url,
       email,
       category,
       shortDescription,
@@ -29,7 +42,7 @@ const AddBlog = () => {
         photo: user?.photoURL,
       },
     };
-    console.log(blogInfo);
+
     try {
       const { data } = await axiosSecure.post(`/blog`, blogInfo);
       e.target.reset();
@@ -70,14 +83,15 @@ const AddBlog = () => {
                 htmlFor=""
                 className="text-gray-600 block mb-1 font-semibold"
               >
-                Blog Photo URL
+                Blog Image
               </label>
+
               <input
-                type="text"
-                required
+                type="file"
                 name="photo"
-                placeholder="Blog photo url"
-                className="w-full rounded-sm outline-none"
+                required
+                accept="image/*"
+                className=" border border-black w-full  bg-white rounded-sm outline-none "
               />
             </div>
             <div>
