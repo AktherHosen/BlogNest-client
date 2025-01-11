@@ -1,6 +1,9 @@
 import { RiHeart2Fill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+
+import defaultBlog from "../assets/defaultblog.jpg";
+import defaultUser from "../assets/user.png";
 const BlogCard = ({ blog, handleWithlist }) => {
   const {
     _id,
@@ -15,17 +18,17 @@ const BlogCard = ({ blog, handleWithlist }) => {
 
   return (
     <div>
-      <div className="w-full min-h-[400px] ">
+      <div className="w-full min-h-[400px] rounded-sm ">
         <Link to={`/blog/${_id}`}>
-          <img
-            src={photo}
-            alt=""
-            className="rounded-lg border w-full h-[250px]"
-          />
+          {photo ? (
+            <img src={photo} alt="" className="w-full h-[200px]" />
+          ) : (
+            <img src={defaultBlog} alt="" className="w-full h-[200px]" />
+          )}
         </Link>
-        <div className="mt-2 space-y-2 min-h-[180px]">
+        <div className="space-y-2 min-h-[180px] bg-primary text-white p-6">
           <div className="flex justify-between items-center">
-            <button className="bg-primary text-white font-semibold px-3 rounded-lg text-xs py-1">
+            <button className="font-semibold  rounded-lg text-xs uppercase">
               {category}
             </button>
             <div className="flex gap-x-4 items-center flex-row-reverse">
@@ -37,28 +40,36 @@ const BlogCard = ({ blog, handleWithlist }) => {
                 }}
                 transition={{ bounceDamping: 10, bounceStiffness: 600 }}
                 onClick={() => handleWithlist(_id)}
-                className="text-2xl text-primary"
+                className="text-2xl text-white hover:text-red-600"
                 title="Wishlist"
               >
                 <RiHeart2Fill />
               </motion.button>
-              <p className="text-gray-600 text-sm font-medium ">
+              <p className=" text-sm font-medium ">
                 {new Date(postedDate).toLocaleDateString()}
               </p>
             </div>
           </div>
-          <h2 className="font-medium text-lg">{blogTitle}</h2>
-          <p className="text-gray-600 text-sm font-normal text-justify">
-            {longDescription.substring(0, 200)}...
+          <h2 className="font-medium text-xl">{blogTitle}</h2>
+          <p className="text-sm md:text-xs font-normal text-justify">
+            {longDescription.substring(0, 110)}...
           </p>
         </div>
 
         <div className="flex items-center gap-4 mt-2">
-          <img
-            src={author?.photo}
-            className="h-[50px] w-[50px] rounded-full border p-1 shadow-md"
-            alt=""
-          />
+          {author?.photo ? (
+            <img
+              src={author?.photo}
+              className="h-[50px] w-[50px] rounded-full border p-1 shadow-md"
+              alt=""
+            />
+          ) : (
+            <img
+              src={defaultUser}
+              className="h-[50px] w-[50px] rounded-full border p-1 shadow-md"
+              alt=""
+            />
+          )}
           <div>
             <h3 className="font-semibold text-sm">{author?.name}</h3>
             <p className="text-gray-600 text-sm font-normal text-justify">

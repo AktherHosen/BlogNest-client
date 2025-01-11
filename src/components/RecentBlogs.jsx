@@ -11,7 +11,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { motion } from "framer-motion";
 import { RiArrowRightDoubleFill } from "react-icons/ri";
-
+import defaultBlog from "../assets/defaultblog.jpg";
 const RecentBlogs = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -111,11 +111,19 @@ const RecentBlogs = () => {
                       }
                     >
                       <PhotoView src={blog?.photo}>
-                        <img
-                          src={blog?.photo}
-                          alt=""
-                          className="h-[250px] w-full rounded-md"
-                        />
+                        {blog?.photo ? (
+                          <img
+                            src={blog?.photo}
+                            alt=""
+                            className="h-[250px] w-full rounded-md"
+                          />
+                        ) : (
+                          <img
+                            src={defaultBlog}
+                            alt=""
+                            className="h-[250px] w-full rounded-md"
+                          />
+                        )}
                       </PhotoView>
                     </PhotoProvider>
                   </div>

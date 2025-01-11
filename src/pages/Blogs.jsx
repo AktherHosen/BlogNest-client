@@ -60,7 +60,7 @@ const Blogs = () => {
   if (isError) {
     return <p className="text-center text-red-500">Error: {error.message}</p>;
   }
-
+  console.log(blogs);
   return (
     <div className="my-4">
       {/* Search and filter section */}
@@ -101,45 +101,49 @@ const Blogs = () => {
           </select>
         </div>
       </div>
-      <div className="mb-4">
-        <h1 className="text-xl font-suse text-primary font-semibold">Blogs</h1>
-        <p className="text-sm font-semibold">
-          Discover, Learn, and Grow Together
-        </p>
-      </div>
-      <div>
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
-            {/* Render skeletons while loading */}
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div key={index} className="w-full min-h-[400px]">
-                <Skeleton height={250} />
-                <Skeleton height={20} width={120} className="mt-2" />
-                <Skeleton height={20} className="mt-2" />
-                <Skeleton count={2} height={15} className="mt-2" />
-                <div className="flex items-center gap-4 mt-2">
-                  <Skeleton circle={true} height={50} width={50} />
-                  <div>
-                    <Skeleton height={15} width={100} />
-                    <Skeleton height={15} width={150} />
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-4">
+          <h1 className="text-xl font-suse text-primary font-semibold">
+            Blogs
+          </h1>
+          <p className="text-sm font-semibold">
+            Discover, Learn, and Grow Together
+          </p>
+        </div>
+        <div>
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
+              {/* Render skeletons while loading */}
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="w-full min-h-[400px]">
+                  <Skeleton height={250} />
+                  <Skeleton height={20} width={120} className="mt-2" />
+                  <Skeleton height={20} className="mt-2" />
+                  <Skeleton count={2} height={15} className="mt-2" />
+                  <div className="flex items-center gap-4 mt-2">
+                    <Skeleton circle={true} height={50} width={50} />
+                    <div>
+                      <Skeleton height={15} width={100} />
+                      <Skeleton height={15} width={150} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : blogs.length === 0 ? (
-          <p className="text-center text-gray-500">No blogs found</p>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
-            {blogs.map((blog) => (
-              <BlogCard
-                key={blog._id}
-                blog={blog}
-                handleWithlist={handleWithlist}
-              />
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          ) : blogs.length === 0 ? (
+            <p className="text-center text-gray-500">No blogs found</p>
+          ) : (
+            <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-x-10 gap-y-6">
+              {blogs.map((blog) => (
+                <BlogCard
+                  key={blog._id}
+                  blog={blog}
+                  handleWithlist={handleWithlist}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
