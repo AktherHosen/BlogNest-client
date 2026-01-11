@@ -1,10 +1,9 @@
-import React from "react";
-import logo from "../../assets/logo.png";
+import { BiWorld } from "react-icons/bi";
 import { FaSquareFacebook } from "react-icons/fa6";
 import { FiInstagram } from "react-icons/fi";
 import { SiLinkedin } from "react-icons/si";
-import { BiWorld } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import logo from "../../assets/logo.png";
 const Footer = () => {
   return (
     <div className="mt-8 bg-[#1E1E1E] min-h-[260px] flex items-center opacity-80  text-white px-6 py-6 lg:px-20 ">
@@ -12,7 +11,7 @@ const Footer = () => {
         <div className="col-span-2 md:col-span-1 md:grid-cols-1 space-y-2">
           <img src={logo} alt="" className="h-12" />
           <h2 className="font-suse text-xl">Blog Nest</h2>
-          <p className="max-w-lg text-justify text-sm">
+          <p className="max-w-lg text-sm">
             We share insights, tips, and stories on a variety of topics. Whether
             you're looking for inspiration, practical advice, or a fresh
             perspective, you'll find it here.
